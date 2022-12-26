@@ -3,6 +3,8 @@
 #include "Animation.h"
 #include "Globals.h"
 #include "p2Point.h"
+#include "List.h"
+
 
 struct Object
 {
@@ -21,8 +23,10 @@ public:
 
 	bool Start();
 	update_status Update();
+
 	bool CleanUp();
 
 public:
-
+	double x, y, rad;
+	int body = 0;
 };
