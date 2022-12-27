@@ -22,16 +22,30 @@ bool ModulePhysics::Start()
 
 	// Create ground
 	ground = Ground();
-	ground.x = 0.0f; // [m]
-	ground.y = 0.0f; // [m]
-	ground.w = 30.0f; // [m]
-	ground.h = 5.0f; // [m]
+	ground.x = 5.0f; // [m]
+	ground.y = 10.0f; // [m]
+	ground.w = 10.0f; // [m]
+	ground.h = 2.0f; // [m]
+
+	// Create ground
+	ground2 = Ground();
+	ground2.x = 35.0f; // [m]
+	ground2.y = 10.0f; // [m]
+	ground2.w = 10.0f; // [m]
+	ground2.h = 2.0f; // [m]
+
+	// Create ground
+	ground3 = Ground();
+	ground3.x = 20.0f; // [m]
+	ground3.y = 20.0f; // [m]
+	ground3.w = 10.0f; // [m]
+	ground3.h = 2.0f; // [m]
 
 	// Create Water
 	water = Water();
-	water.x = ground.x + ground.w; // Start where ground ends [m]
+	water.x = 0.0f; // Start where ground ends [m]
 	water.y = 0.0f; // [m]
-	water.w = 30.0f; // [m]
+	water.w = 60.0f; // [m]
 	water.h = 5.0f; // [m]
 	water.density = 50.0f; // [kg/m^3]
 	water.vx = -1.0f; // [m/s]
@@ -49,7 +63,7 @@ bool ModulePhysics::Start()
 	// Set static properties of the ball
 	ball.mass = 10.0f; // [kg]
 	ball.surface = 1.0f; // [m^2]
-	ball.radius = 0.5f; // [m]
+	ball.radius = 0.8f; // [m]
 	ball.cd = 0.4f; // [-]
 	ball.cl = 1.2f; // [-]
 	ball.b = 10.0f; // [...]
@@ -162,6 +176,8 @@ update_status ModulePhysics::PostUpdate()
 	// Draw ground
 	color_r = 0; color_g = 255; color_b = 0;
 	App->renderer->DrawQuad(ground.pixels(), color_r, color_g, color_b);
+	App->renderer->DrawQuad(ground2.pixels(), color_r, color_g, color_b);
+	App->renderer->DrawQuad(ground3.pixels(), color_r, color_g, color_b);
 
 	// Draw water
 	color_r = 0; color_g = 0; color_b = 255;
