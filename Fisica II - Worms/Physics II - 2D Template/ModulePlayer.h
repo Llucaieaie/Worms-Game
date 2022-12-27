@@ -27,6 +27,6 @@ public:
 	bool CleanUp();
 
 public:
-	double x, y, rad;
+	int x, y, r;
 	int body = 0;
 };

@@ -18,7 +18,7 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 	
-	body = App->physics->CreateBall(30, 15, 512, 379, 0, 0);
+	body = App->physics->CreateCircle(30, 15, 512, 379, 0, 0);
 
 	return true;
 }
@@ -28,7 +28,7 @@ bool ModulePlayer::Start()
 // Update: draw background
 update_status ModulePlayer::Update()
 {
-	App->renderer->DrawCircle(METERS_TO_PIXELS(App->physics->balls.At(body)->x), METERS_TO_PIXELS(App->physics->balls.At(body)->y), METERS_TO_PIXELS(App->physics->balls.At(body)->rad), 0, 0, 255);
+	App->renderer->DrawCircle(METERS_TO_PIXELS(App->physics->balls.At(body)->x), METERS_TO_PIXELS(App->physics->balls.At(body)->y), METERS_TO_PIXELS(App->physics->balls.At(body)->r), 0, 0, 255);
 	return UPDATE_CONTINUE;
 }
 

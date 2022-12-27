@@ -13,41 +13,40 @@
 #define PIXELS_TO_METERS(p) ((float) METERS_PER_PIXEL * p)
 #define GRAVITY 10.0f
 
-class Ball
+class Circle
 {
 public:
 	// Position
-	// You could also use an array/vector
-	double x;
-	double y;
-	double rad;
+	int x;
+	int y;
+	double r;//radius
 
 	// Velocity
-	double vx;
-	double vy;
+	int vx;
+	int vy;
 
 	// Acceleration
-	double ax;
-	double ay;
+	int ax;
+	int ay;
 
 	//Angle
-	double angle = sqrt(vx * vx + vy * vy);
+	int angle = sqrt(vx * vx + vy * vy);
 
-	// Force (total) applied to the ball
-	double fx;
-	double fy;
+	// Force applied to the ball
+	int fx;
+	int fy;
 
 	// Mass
-	double mass;
+	int mass;
 
 	// Aerodynamics stuff
-	double surface; // Effective wet surface
-	double cl; // Lift coefficient
-	double cd = 0.47f; // Drag coefficient
+	int surface; // Effective wet surface
+	int cl; // Lift coefficient
+	int cd = 0.47f; // Drag coefficient
 
 	//Hidrodinamic stuff
-	double density;
-	double volume; //volumen submergido
+	int density;
+	int volume; //volumen submergido
 
 
 	// Has physics enabled?
@@ -58,10 +57,10 @@ public:
 	void AddForce(double fx, double fy);
 	void SetPosition(double x, double y);
 
-	dPoint GetVelocity();
+	iPoint GetVelocity();
 
-	double mfx;
-	double mfy;
+	int mfx;
+	int mfy;
 
 	//Collider* ball_col = nullptr;
 
@@ -79,9 +78,9 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
-	int CreateBall(double mass, double rad, double x, double y, double vx, double vy);
+	int CreateCircle(int mass, double r, int x, int y, int vx, int vy);
 
-	DynArray<Ball> balls;
+	DynArray<Circle> balls;
 private:
 
 	bool debug;
