@@ -58,26 +58,26 @@ bool ModulePhysics::Start()
 	atmosphere.density = 1.0f; // [kg/m^3]
 
 	// Create a ball
-	PhysBall ball = PhysBall();
+	PhysBall ball1 = PhysBall();
 
 	// Set static properties of the ball
-	ball.mass = 10.0f; // [kg]
-	ball.surface = 1.0f; // [m^2]
-	ball.radius = 0.8f; // [m]
-	ball.cd = 0.4f; // [-]
-	ball.cl = 1.2f; // [-]
-	ball.b = 10.0f; // [...]
-	ball.coef_friction = 0.9f; // [-]
-	ball.coef_restitution = 0.8f; // [-]
+	ball1.mass = 10.0f; // [kg]
+	ball1.surface = 1.0f; // [m^2]
+	ball1.radius = 0.8f; // [m]
+	ball1.cd = 0.4f; // [-]
+	ball1.cl = 1.2f; // [-]
+	ball1.b = 10.0f; // [...]
+	ball1.coef_friction = 0.9f; // [-]
+	ball1.coef_restitution = 0.8f; // [-]
 
 	// Set initial position and velocity of the ball
-	ball.x = 2.0f;
-	ball.y = (ground.y + ground.h) + 2.0f;
-	ball.vx = 5.0f;
-	ball.vy = 10.0f;
+	ball1.x = 2.0f;
+	ball1.y = (ground.y + ground.h) + 2.0f;
+	ball1.vx = .0f;
+	ball1.vy = .0f;
 
 	// Add ball to the collection
-	balls.emplace_back(ball);
+	balls.emplace_back(ball1);
 
 	return true;
 }
