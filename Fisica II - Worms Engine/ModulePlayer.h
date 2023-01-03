@@ -3,6 +3,7 @@
 #include "Animation.h"
 #include "Globals.h"
 #include "p2Point.h"
+#include "ModulePhysics.h"
 
 class PhysBody;
 
@@ -43,4 +44,11 @@ public:
 	PhysBody* flipper_up2_wheel;
 
 	PhysBody* sensor1;
+
+
+	std::vector<PhysBall> balls{};
+	PhysBall a;
+
+	// Misc
+	float dt = 1.0 / 60.0;
 };
