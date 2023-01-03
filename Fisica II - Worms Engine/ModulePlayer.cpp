@@ -135,6 +135,10 @@ update_status ModulePlayer::Update()
 			ball.vy *= ball.coef_restitution;
 		}
 
+	}
+
+	 
+
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN) {
 
 			for (auto& ball : balls)
@@ -144,44 +148,49 @@ update_status ModulePlayer::Update()
 				{
 					continue;
 				}
-				ball.x = 10.0f;
+				ball.vx = 10.0f;
+			}
+
+			
+		}
+	
+
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) {
+			for (auto& ball : balls)
+			{
+				// Skip ball if physics not enabled
+				if (!ball.physics_enabled)
+				{
+					continue;
+				}
+				ball.vx = -10.0f;
+			}
+		}
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) {
+			for (auto& ball : balls)
+			{
+				// Skip ball if physics not enabled
+				if (!ball.physics_enabled)
+				{
+					continue;
+				}
+				ball.vy = 10.0f;
+			}
+		}
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+			for (auto& ball : balls)
+			{
+				// Skip ball if physics not enabled
+				if (!ball.physics_enabled)
+				{
+					continue;
+				}
+				ball.vy = 10.0f;
 			}
 		}
 
-		a.ax = 1.0f;
 
-		a.mass = 10.0f; // [kg]
-		a.surface = 1.0f; // [m^2]
-		a.radius = 1.8f; // [m]
-		a.cd = 0.4f; // [-]
-		a.cl = 1.2f; // [-]
-		a.b = 10.0f; // [...]
-		a.coef_friction = 0.9f; // [-]
-		a.coef_restitution = 0.8f; // [-]
-
-		// Set initial position and velocity of the ball
-		a.x = 11.0f;
-		a.y = (App->physics->ground.y + App->physics->ground.h) + 2.0f;
-		a.vx = 111.0f;
-		a.vy = .0f;
-
-		int pos_x = METERS_TO_PIXELS(a.x);
-		int pos_y = SCREEN_HEIGHT - METERS_TO_PIXELS(a.y);
-		int size_r = METERS_TO_PIXELS(a.radius);
-		App->renderer->DrawCircle(pos_x, pos_y, size_r, 255, 0, 0);
-		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) {
-			a.vx = 10.0f;
-			a.x = a.x + 5.0f;
-		}
-		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) {
-
-		}
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
-
-		}
-
-
-	}
+	
 	for (auto& ball : balls)
 	{
 		// Colors
