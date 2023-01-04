@@ -45,6 +45,7 @@ public:
 
 	PhysBody* sensor1;
 
+	bool turn1 = truea;
 
 	std::vector<PhysBall> balls{};
 	PhysBall a;

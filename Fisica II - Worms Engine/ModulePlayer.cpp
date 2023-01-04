@@ -19,6 +19,7 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 	
+
 	// Create a ball
 	PhysBall ballp = PhysBall();
 
@@ -40,6 +41,27 @@ bool ModulePlayer::Start()
 	
 	// Add ball to the collection
 	balls.emplace_back(ballp);
+
+	PhysBall ballp2 = PhysBall();
+
+	// Set static properties of the ball
+	ballp2.mass = 10.0f; // [kg]
+	ballp2.surface = 1.0f; // [m^2]
+	ballp2.radius = 1.8f; // [m]
+	ballp2.cd = 0.4f; // [-]
+	ballp2.cl = 1.2f; // [-]
+	ballp2.b = 10.0f; // [...]
+	ballp2.coef_friction = 0.9f; // [-]
+	ballp2.coef_restitution = 0.8f; // [-]
+
+	// Set initial position and velocity of the ball
+	ballp2.x = 40.0f;
+	ballp2.y = (App->physics->ground.y + App->physics->ground.h) + 2.0f;
+	ballp2.vx = .0f;
+	ballp2.vy = .0f;
+
+	// Add ball to the collection
+	balls.emplace_back(ballp2);
 
 	return true;
 }
@@ -134,64 +156,170 @@ update_status ModulePlayer::Update()
 			ball.vx *= ball.coef_friction;
 			ball.vy *= ball.coef_restitution;
 		}
+		if (is_colliding_with_ground(ball, App->physics->ground2))
+		{
+
+			// Elastic bounce with ground
+			ball.vy = -ball.vy;
+
+			// FUYM non-elasticity
+			ball.vx *= ball.coef_friction;
+			ball.vy *= ball.coef_restitution;
+		}
+		if (is_colliding_with_ground(ball, App->physics->ground3))
+		{
+
+			// Elastic bounce with ground
+			ball.vy = -ball.vy;
+
+			// FUYM non-elasticity
+			ball.vx *= ball.coef_friction;
+			ball.vy *= ball.coef_restitution;
+		}
 
 	}
 
-	 
 
-		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN) {
+	//Player1 Turn
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && turn1 == true) {
 
-			for (auto& ball : balls)
+			for (auto& ballp : balls)
 			{
 				// Skip ball if physics not enabled
-				if (!ball.physics_enabled)
+				if (!ballp.physics_enabled)
 				{
 					continue;
 				}
-				ball.vx = 10.0f;
+				ballp.vx = 10.0f;
 			}
 
-			
+
+		}
+
+
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && turn1 == true) {
+			for (auto& ballp : balls)
+			{
+				// Skip ball if physics not enabled
+				if (!ballp.physics_enabled)
+				{
+					continue;
+				}
+				ballp.vx = -10.0f;
+			}
+		}
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && turn1 == true) {
+			for (auto& ballp : balls)
+			{
+				// Skip ball if physics not enabled
+				if (!ballp.physics_enabled)
+				{
+					continue;
+				}
+				ballp.vy = 10.0f;
+			}
+		}
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && turn1 == true) {
+			for (auto& ballp : balls)
+			{
+				// Skip ball if physics not enabled
+				if (!ballp.physics_enabled)
+				{
+					continue;
+				}
+				ballp.vy = 10.0f;
+
+			}
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && turn1 == true) {
+			for (auto& ballp : balls)
+			{
+				// Skip ball if physics not enabled
+				if (!ballp.physics_enabled)
+				{
+					continue;
+				}
+				if (turn1 == true) {
+					turn1 = false;
+				}
+				else if (turn1 == false) {
+					turn1 = true;
+				}
+			}
+		}
+	//Player 2 turn
+		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && turn1 == false) {
+
+			for (auto& ballp2 : balls)
+			{
+				// Skip ball if physics not enabled
+				if (!ballp2.physics_enabled)
+				{
+					continue;
+				}
+				ballp2.vx = 10.0f;
+			}
+
+
+		}
+
+
+		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && turn1 == false) {
+			for (auto& ballp2 : balls)
+			{
+				// Skip ball if physics not enabled
+				if (!ballp2.physics_enabled)
+				{
+					continue;
+				}
+				ballp2.vx = -10.0f;
+			}
+		}
+		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && turn1 == false) {
+			for (auto& ballp2 : balls)
+			{
+				// Skip ball if physics not enabled
+				if (!ballp2.physics_enabled)
+				{
+					continue;
+				}
+				ballp2.vy = 10.0f;
+			}
+		}
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && turn1 == false) {
+			for (auto& ballp2 : balls)
+			{
+				// Skip ball if physics not enabled
+				if (!ballp2.physics_enabled)
+				{
+					continue;
+				}
+				ballp2.vy = 10.0f;
+				//if (turn1 = false) {
+				//	ballp2.vy = 10.0f;
+				//}
+			}
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN && turn1 == false) {
+			for (auto& ballp2 : balls)
+			{
+				// Skip ball if physics not enabled
+				if (!ballp2.physics_enabled)
+				{
+					continue;
+				}
+				if (turn1 == true) {
+					turn1 = false;
+				}
+				else if (turn1 == false) {
+					turn1 = true;
+				}
+			}
 		}
 	
-
-		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) {
-			for (auto& ball : balls)
-			{
-				// Skip ball if physics not enabled
-				if (!ball.physics_enabled)
-				{
-					continue;
-				}
-				ball.vx = -10.0f;
-			}
-		}
-		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) {
-			for (auto& ball : balls)
-			{
-				// Skip ball if physics not enabled
-				if (!ball.physics_enabled)
-				{
-					continue;
-				}
-				ball.vy = 10.0f;
-			}
-		}
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
-			for (auto& ball : balls)
-			{
-				// Skip ball if physics not enabled
-				if (!ball.physics_enabled)
-				{
-					continue;
-				}
-				ball.vy = 10.0f;
-			}
-		}
-
-
-	
-	for (auto& ball : balls)
+	for (auto& ballp : balls)
 	{
 		// Colors
 		int color_r, color_g, color_b;
@@ -199,11 +327,36 @@ update_status ModulePlayer::Update()
 		// Draw ground
 		color_r = 0; color_g = 255; color_b = 0;
 		// Convert from physical magnitudes to geometrical pixels
-		int pos_x = METERS_TO_PIXELS(ball.x);
-		int pos_y = SCREEN_HEIGHT - METERS_TO_PIXELS(ball.y);
-		int size_r = METERS_TO_PIXELS(ball.radius);
+		int pos_x = METERS_TO_PIXELS(ballp.x);
+		int pos_y = SCREEN_HEIGHT - METERS_TO_PIXELS(ballp.y);
+		int size_r = METERS_TO_PIXELS(ballp.radius);
 		// Select color
-		if (ball.physics_enabled)
+		if (ballp.physics_enabled)
+		{
+			color_r = 255; color_g = 255; color_b = 255;
+		}
+		else
+		{
+			color_r = 255; color_g = 0; color_b = 0;
+		}
+
+		// Draw ball
+		App->renderer->DrawCircle(pos_x, pos_y, size_r, color_r, color_g, color_b);
+	}
+
+	for (auto& ballp2 : balls)
+	{
+		// Colors
+		int color_r, color_g, color_b;
+
+		// Draw ground
+		color_r = 0; color_g = 255; color_b = 0;
+		// Convert from physical magnitudes to geometrical pixels
+		int pos_x = METERS_TO_PIXELS(ballp2.x);
+		int pos_y = SCREEN_HEIGHT - METERS_TO_PIXELS(ballp2.y);
+		int size_r = METERS_TO_PIXELS(ballp2.radius);
+		// Select color
+		if (ballp2.physics_enabled)
 		{
 			color_r = 255; color_g = 255; color_b = 255;
 		}
