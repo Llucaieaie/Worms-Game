@@ -74,4 +74,19 @@ public:
 
 	PhysBody* player_lose;
 	uint player_lose_fx;
+
+	//FONTS
+	int scoreFont = -1;
+	int highscoreFont = -1;
+	int sizescoreFont = 32;
+
+
+	int font = -1;
+	int fontSize = 12;
+
+	char currentScoreNum[12] = { "\0" };
+	char highScoreNum[12] = { "\0" };
+	char prevScoreNum[12] = { "\0" };
+
+	int currentScore = 0;
 };
