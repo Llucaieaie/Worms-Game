@@ -9,9 +9,11 @@
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
 #include "ModuleAudio.h"
+#include "ModuleFonts.h"
 #include "ModulePlayer.h"
 #include "ModulePhysics.h"
 #include "ModuleSceneIntro.h"
+
 
 class Application
 {
@@ -21,8 +23,10 @@ public:
 	ModuleTextures* textures;
 	ModuleInput* input;
 	ModuleAudio* audio;
+	ModuleFonts* fonts;
 	ModulePlayer* player;
 	ModuleSceneIntro* scene_intro;
+
 	ModulePhysics* physics;
 
 private:
