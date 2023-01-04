@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModulePhysics.h"
+#include "ModulePlayer.h"
 #include "math.h"
 #include <cmath>
 
@@ -319,3 +320,27 @@ SDL_Rect Ground::pixels()
 }
 
 
+void ModulePhysics::Shoot(int x, int y)
+{
+	PhysBall projectile = PhysBall();
+
+	// Set physics properties of the ball
+	projectile.mass = 10.0f; // [kg]
+	projectile.radius = 0.6f; // [m]
+	projectile.surface = projectile.radius * M_PI; // [m^2]
+	projectile.cd = 0.4f; // [-]
+	projectile.cl = 1.2f; // [-]
+	projectile.b = 10.0f; // [...]
+	projectile.coef_friction = 0.7f; // [-]
+	projectile.coef_restitution = 0.8f; // [-]
+
+	// Set initial position and velocity of the ball
+	projectile.x = x;
+	projectile.y = y;
+	projectile.vx = 20.0f;
+	projectile.vy = 15.0f;
+
+	projectile.cd = 0.4;
+
+	App->player->balls.emplace_back(projectile);
+}

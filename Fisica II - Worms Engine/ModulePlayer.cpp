@@ -24,14 +24,14 @@ bool ModulePlayer::Start()
 	PhysBall ballp = PhysBall();
 
 	// Set static properties of the ball
-	ballp.mass = 10.0f; // [kg]
-	ballp.surface = 1.0f; // [m^2]
+	ballp.mass = 40.0f; // [kg]
 	ballp.radius = 1.8f; // [m]
+	ballp.surface = ballp.radius * M_PI; // [m^2]
 	ballp.cd = 0.4f; // [-]
 	ballp.cl = 1.2f; // [-]
 	ballp.b = 10.0f; // [...]
-	ballp.coef_friction = 0.9f; // [-]
-	ballp.coef_restitution = 0.8f; // [-]
+	ballp.coef_friction = 0.0f; // [-]
+	ballp.coef_restitution = 0.0f; // [-]
 
 	// Set initial position and velocity of the ball
 	ballp.x = 10.0f;
@@ -45,14 +45,14 @@ bool ModulePlayer::Start()
 	PhysBall ballp2 = PhysBall();
 
 	// Set static properties of the ball
-	ballp2.mass = 10.0f; // [kg]
-	ballp2.surface = 1.0f; // [m^2]
+	ballp2.mass = 40.0f; // [kg]
 	ballp2.radius = 1.8f; // [m]
+	ballp2.surface = ballp2.radius * M_PI; // [m^2]
 	ballp2.cd = 0.4f; // [-]
 	ballp2.cl = 1.2f; // [-]
 	ballp2.b = 10.0f; // [...]
-	ballp2.coef_friction = 0.9f; // [-]
-	ballp2.coef_restitution = 0.8f; // [-]
+	ballp2.coef_friction = 0.0f; // [-]
+	ballp2.coef_restitution = 0.0f; // [-]
 
 	// Set initial position and velocity of the ball
 	ballp2.x = 40.0f;
@@ -232,6 +232,26 @@ update_status ModulePlayer::Update()
 			}
 		}
 
+		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+		{
+
+			if (turn1)
+			{
+				for (auto& ballp : balls)
+				{
+					App->physics->Shoot(ballp.x, ballp.y);
+					turn1 = false;
+				}
+			}
+			else if (!turn1)
+			{
+				for (auto& ballp2 : balls)
+				{
+					App->physics->Shoot(ballp2.x, ballp2.y);
+					turn1 = true;
+				}
+			}
+		}
 		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && turn1 == true) {
 			for (auto& ballp : balls)
 			{

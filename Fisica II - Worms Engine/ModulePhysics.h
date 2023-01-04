@@ -91,6 +91,8 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
+	void Shoot(int x, int y);
+
 	// Physics objects
 	std::vector<PhysBall> balls{};
 	Atmosphere atmosphere{};
@@ -130,5 +132,3 @@ bool is_colliding_with_water(const PhysBall& ball, const Water& water);
 
 // Detect collision between circle and rectange
 bool check_collision_circle_rectangle(float cx, float cy, float cr, float rx, float ry, float rw, float rh);
-
-
