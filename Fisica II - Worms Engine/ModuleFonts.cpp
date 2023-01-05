@@ -98,7 +98,7 @@ void ModuleFonts::BlitText(int x, int y, int font_id, const char* text) const
                 spriteRect.x = (j % font->columns) * spriteRect.w;
                 spriteRect.y = (j / font->columns) * spriteRect.h;
                 // Blit the character at its proper position
-                App->renderer->Blit(font->texture, x, y, false, &spriteRect);
+                App->renderer->Blit(font->texture, x, y, &spriteRect);
                 break;
             }
         }

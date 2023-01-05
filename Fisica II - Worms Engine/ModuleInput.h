@@ -1,6 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#define NUM_MOUSE_BUTTONS 5
 
 enum KEY_STATE
 {
@@ -25,12 +26,14 @@ public:
 	{
 		return keyboard[id];
 	}
-
+	KEY_STATE GetMouseButtonDown(int id) const
+	{
+		return mouseButtons[id - 1];
+	}
 	int GetMouseX() const
 	{
 		return mouse_x;
 	}
-
 	int GetMouseY() const
 	{
 		return mouse_y;
@@ -38,6 +41,7 @@ public:
 
 private:
 	KEY_STATE* keyboard;
+	KEY_STATE mouseButtons[NUM_MOUSE_BUTTONS];
 	int mouse_x;
 	int mouse_y;
 };

@@ -10,7 +10,6 @@
 #define METERS_TO_PIXELS(m) ((int) std::floor(PIXELS_PER_METER * m))
 #define PIXEL_TO_METERS(p)  ((float) METER_PER_PIXEL * p)
 
-
 // Class: Ball object (a simple stoopid physics object)
 class PhysBall
 {
@@ -103,6 +102,11 @@ public:
 
 	// Misc
 	float dt = 1.0 / 60.0;
+
+	float gravity_x = 0;
+	float gravity_y = 1000;
+
+	enum class Integrator_Type { VERLET, EULER_FORW, EULER_BACK }integrator = Integrator_Type::VERLET;
 
 private:
 

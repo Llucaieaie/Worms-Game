@@ -51,6 +51,8 @@ public:
 	update_status Update();
 	bool CleanUp();
 
+	void TextDraw(int numbers, int n, int posX, int posY, int separacion, float escale);
+
 public:
 
 	SDL_Texture* graphics;
@@ -75,18 +77,14 @@ public:
 	PhysBody* player_lose;
 	uint player_lose_fx;
 
-	//FONTS
-	int scoreFont = -1;
-	int highscoreFont = -1;
-	int sizescoreFont = 32;
+	SDL_Texture* nombres;
+	SDL_Texture* variables;
+	SDL_Texture* integrador;
+	SDL_Texture* fps;
+	SDL_Texture* arma;
 
-
-	int font = -1;
-	int fontSize = 12;
-
-	char currentScoreNum[12] = { "\0" };
-	char highScoreNum[12] = { "\0" };
-	char prevScoreNum[12] = { "\0" };
-
-	int currentScore = 0;
+	struct Mouse 
+	{
+		int x, y;
+	}mouse;
 };
