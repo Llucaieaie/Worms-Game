@@ -63,7 +63,117 @@ bool ModulePhysics::Start()
 
 update_status ModulePhysics::PreUpdate()
 {
-	// Process all balls in the scenario
+	// Process PLAYERS in the scenario
+	for (auto& ball : players)
+	{
+		// Skip ball if physics not enabled
+		if (!ball.physics_enabled)
+		{
+			continue;
+		}
+
+		// Step #0: Clear old values
+		// ----------------------------------------------------------------------------------------
+
+		// Reset total acceleration and total accumulated force of the ball
+		ball.fx = ball.fy = 0.0f;
+		ball.ax = ball.ay = 0.0f;
+
+		// Step #1: Compute forces
+		// ----------------------------------------------------------------------------------------
+
+		// Gravity force
+		float fgx = ball.mass * 0.0f;
+		float fgy = ball.mass * -10.0f; // Let's assume gravity is constant and downwards
+		ball.fx += fgx; ball.fy += fgy; // Add this force to ball's total force
+
+		// Aerodynamic Drag force (only when not in water)
+		if (!is_colliding_with_water(ball, water))
+		{
+			float fdx = 0.0f; float fdy = 0.0f;
+			compute_aerodynamic_drag(fdx, fdy, ball, atmosphere);
+			ball.fx += fdx; ball.fy += fdy; // Add this force to ball's total force
+		}
+
+		// Hydrodynamic forces (only when in water)
+		if (is_colliding_with_water(ball, water))
+		{
+			// Hydrodynamic Drag force
+			float fhdx = 0.0f; float fhdy = 0.0f;
+			compute_hydrodynamic_drag(fhdx, fhdy, ball, water);
+			ball.fx += fhdx; ball.fy += fhdy; // Add this force to ball's total force
+
+			// Hydrodynamic Buoyancy force
+			float fhbx = 0.0f; float fhby = 0.0f;
+			compute_hydrodynamic_buoyancy(fhbx, fhby, ball, water);
+			ball.fx += fhbx; ball.fy += fhby; // Add this force to ball's total force
+		}
+
+		// Other forces
+		// ...
+
+		// Step #2: 2nd Newton's Law
+		// ----------------------------------------------------------------------------------------
+
+		// SUM_Forces = mass * accel --> accel = SUM_Forces / mass
+		ball.ax = ball.fx / ball.mass;
+		ball.ay = ball.fy / ball.mass;
+
+		// Step #3: Integrate --> from accel to new velocity & new position
+		// ----------------------------------------------------------------------------------------
+
+		// We will use the 2nd order "Velocity Verlet" method for integration.
+		integrator_velocity_verlet(ball, dt);
+
+		// Step #4: solve collisions
+		// ----------------------------------------------------------------------------------------
+
+		// Solve collision between ball and ground
+		if (is_colliding_with_ground(ball, ground))
+		{
+			// TP ball to ground surface
+			if(ball.y >= ground.y + ground.h + ball.radius-0.5)
+				ball.y = ground.y + ground.h + ball.radius;
+			else if (ball.y == ground.y + ball.radius)
+				ball.y = ground.y + ball.radius;
+			else
+				ball.x = ground.x + ground.x + ball.radius;
+			// Elastic bounce with ground
+			ball.vy = -ball.vy;
+
+			// FUYM non-elasticity
+			ball.vx *= ball.coef_friction;
+			ball.vy *= ball.coef_restitution;
+		}
+
+		if (is_colliding_with_ground(ball, ground2))
+		{
+			// TP ball to ground surface
+			ball.y = ground2.y + ground2.h + ball.radius;
+
+			// Elastic bounce with ground
+			ball.vy = -ball.vy;
+
+			// FUYM non-elasticity
+			ball.vx *= ball.coef_friction;
+			ball.vy *= ball.coef_restitution;
+		}
+
+		if (is_colliding_with_ground(ball, ground3))
+		{
+			// TP ball to ground surface
+			ball.y = ground3.y + ground3.h + ball.radius;
+
+			// Elastic bounce with ground
+			ball.vy = -ball.vy;
+
+			// FUYM non-elasticity
+			ball.vx *= ball.coef_friction;
+			ball.vy *= ball.coef_restitution;
+		}
+	}
+	
+	// Process balls in the scenario
 	for (auto& ball : balls)
 	{
 		// Skip ball if physics not enabled

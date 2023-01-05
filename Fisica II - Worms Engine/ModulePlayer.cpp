@@ -40,7 +40,7 @@ bool ModulePlayer::Start()
 	ballp.vy = .0f;
 	
 	// Add ball to the collection
-	App->physics->balls.emplace_back(ballp);
+	App->physics->players.emplace_back(ballp);
 
 	PhysBall ballp2 = PhysBall();
 
@@ -61,7 +61,7 @@ bool ModulePlayer::Start()
 	ballp2.vy = .0f;
 
 	// Add ball to the collection
-	App->physics->balls.emplace_back(ballp2);
+	App->physics->players.emplace_back(ballp2);
 
 	return true;
 }
@@ -80,7 +80,7 @@ update_status ModulePlayer::Update()
 	//Player1 Turn
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && turn1 == true) {
 
-			for (auto& ball : App->physics->balls)
+			for (auto& ball : App->physics->players)
 			{
 				// Skip ball if physics not enabled
 				if (!ball.physics_enabled)
@@ -95,7 +95,7 @@ update_status ModulePlayer::Update()
 
 
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && turn1 == true) {
-			for (auto& ballp : App->physics->balls)
+			for (auto& ballp : App->physics->players)
 			{
 				// Skip ball if physics not enabled
 				if (!ballp.physics_enabled)
@@ -106,7 +106,7 @@ update_status ModulePlayer::Update()
 			}
 		}
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && turn1 == true) {
-			for (auto& ballp : App->physics->balls)
+			for (auto& ballp : App->physics->players)
 			{
 				// Skip ball if physics not enabled
 				if (!ballp.physics_enabled)
@@ -117,7 +117,7 @@ update_status ModulePlayer::Update()
 			}
 		}
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && turn1 == true) {
-			for (auto& ballp : App->physics->balls)
+			for (auto& ballp : App->physics->players)
 			{
 				// Skip ball if physics not enabled
 				if (!ballp.physics_enabled)
@@ -134,7 +134,7 @@ update_status ModulePlayer::Update()
 
 			if (turn1)
 			{
-				for (auto& ballp : App->physics->balls)
+				for (auto& ballp : App->physics->players)
 				{
 					App->physics->Shoot(ballp.x, ballp.y);
 					turn1 = false;
@@ -142,7 +142,7 @@ update_status ModulePlayer::Update()
 			}
 			else if (!turn1)
 			{
-				for (auto& ballp2 : App->physics->balls)
+				for (auto& ballp2 : App->physics->players)
 				{
 					App->physics->Shoot(ballp2.x, ballp2.y);
 					turn1 = true;
@@ -150,7 +150,7 @@ update_status ModulePlayer::Update()
 			}
 		}
 		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && turn1 == true) {
-			for (auto& ballp : App->physics->balls)
+			for (auto& ballp : App->physics->players)
 			{
 				// Skip ball if physics not enabled
 				if (!ballp.physics_enabled)
@@ -168,7 +168,7 @@ update_status ModulePlayer::Update()
 	//Player 2 turn
 		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && turn1 == false) {
 
-			for (auto& ballp2 : App->physics->balls)
+			for (auto& ballp2 : App->physics->players)
 			{
 				// Skip ball if physics not enabled
 				if (!ballp2.physics_enabled)
@@ -183,7 +183,7 @@ update_status ModulePlayer::Update()
 
 
 		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && turn1 == false) {
-			for (auto& ballp2 : App->physics->balls)
+			for (auto& ballp2 : App->physics->players)
 			{
 				// Skip ball if physics not enabled
 				if (!ballp2.physics_enabled)
@@ -194,7 +194,7 @@ update_status ModulePlayer::Update()
 			}
 		}
 		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && turn1 == false) {
-			for (auto& ballp2 : App->physics->balls)
+			for (auto& ballp2 : App->physics->players)
 			{
 				// Skip ball if physics not enabled
 				if (!ballp2.physics_enabled)
@@ -205,7 +205,7 @@ update_status ModulePlayer::Update()
 			}
 		}
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && turn1 == false) {
-			for (auto& ballp2 : App->physics->balls)
+			for (auto& ballp2 : App->physics->players)
 			{
 				// Skip ball if physics not enabled
 				if (!ballp2.physics_enabled)
@@ -220,7 +220,7 @@ update_status ModulePlayer::Update()
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN && turn1 == false) {
-			for (auto& ballp2 : App->physics->balls)
+			for (auto& ballp2 : App->physics->players)
 			{
 				// Skip ball if physics not enabled
 				if (!ballp2.physics_enabled)
@@ -236,7 +236,7 @@ update_status ModulePlayer::Update()
 			}
 		}
 	
-	for (auto& ballp : App->physics->balls)
+	for (auto& ballp : App->physics->players)
 	{
 		// Colors
 		int color_r, color_g, color_b;
@@ -261,7 +261,7 @@ update_status ModulePlayer::Update()
 		App->renderer->DrawCircle(pos_x, pos_y, size_r, color_r, color_g, color_b);
 	}
 
-	for (auto& ballp2 : App->physics->balls)
+	for (auto& ballp2 : App->physics->players)
 	{
 		// Colors
 		int color_r, color_g, color_b;

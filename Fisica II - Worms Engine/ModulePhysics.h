@@ -93,6 +93,7 @@ public:
 	void Shoot(int x, int y);
 
 	// Physics objects
+	std::vector<PhysBall> players{};
 	std::vector<PhysBall> balls{};
 	Atmosphere atmosphere{};
 	Ground ground{};
