@@ -30,6 +30,7 @@ public:
 public:
 
 	Object ball;
+	Object ball2;
 	Object flipper1;
 	Object flipper2;
 	Object spring;
@@ -44,6 +45,8 @@ public:
 	PhysBody* flipper_up2_wheel;
 
 	PhysBody* sensor1;
+
+	PhysBall ballp2 = PhysBall();
 
 	bool turn1 = true;
 
