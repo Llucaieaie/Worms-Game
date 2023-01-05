@@ -194,7 +194,7 @@ update_status ModulePhysics::PreUpdate()
 
 		// Gravity force
 		float fgx = ball.mass * 0.0f;
-		float fgy = ball.mass * -10.0f; // Let's assume gravity is constant and downwards
+		float fgy = ball.mass * gravity_y; // Let's assume gravity is constant and downwards
 		ball.fx += fgx; ball.fy += fgy; // Add this force to ball's total force
 
 		// Aerodynamic Drag force (only when not in water)
@@ -320,6 +320,29 @@ update_status ModulePhysics::PostUpdate()
 		App->renderer->DrawCircle(pos_x, pos_y, size_r, color_r, color_g, color_b);
 	}
 
+	if ((App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) && dt == 0.0167f)
+	{
+		dt = 0.033f;
+	}
+	else if ((App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) && dt == 0.033f)
+	{
+		dt = 0.0167f;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
+	{
+		if (integrator == Integrator_Type::EULER_FORW) 
+			integrator = Integrator_Type::VERLET;
+
+		else if (integrator == Integrator_Type::VERLET)
+			integrator = Integrator_Type::EULER_BACK;
+
+		else if (integrator == Integrator_Type::EULER_BACK)
+			integrator = Integrator_Type::EULER_FORW;
+	}
+
+	
+
 	return UPDATE_CONTINUE;
 }
 
@@ -380,6 +403,24 @@ void integrator_velocity_verlet(PhysBall& ball, float dt)
 	ball.y += ball.vy * dt + 0.5f * ball.ay * dt * dt;
 	ball.vx += ball.ax * dt;
 	ball.vy += ball.ay * dt;
+}
+
+// Integration scheme: Euler Forward
+void integrator_euler_forward(PhysBall& ball, float dt) 
+{
+	ball.vx += (ball.ax * dt);
+	ball.vy += (ball.ay * dt);
+	ball.x += (ball.vx * dt);
+	ball.y += (ball.vy * dt);
+}
+
+// Integration scheme: Euler Backward
+void integrator_euler_backward(PhysBall& ball, float dt)
+{
+	ball.x += (ball.vx * dt);
+	ball.y += (ball.vy * dt);
+	ball.vx += (ball.ax * dt);
+	ball.vy += (ball.ay * dt);
 }
 
 // Detect collision with ground

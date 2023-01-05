@@ -102,10 +102,10 @@ public:
 	Water water{};
 
 	// Misc
-	float dt = 1.0 / 60.0;
+	float dt = 0.0167f;
 
 	float gravity_x = 0;
-	float gravity_y = 1000;
+	float gravity_y = -10;
 
 	enum class Integrator_Type { VERLET, EULER_FORW, EULER_BACK }integrator = Integrator_Type::VERLET;
 

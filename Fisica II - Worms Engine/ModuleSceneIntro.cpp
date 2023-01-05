@@ -51,79 +51,37 @@ bool ModuleSceneIntro::CleanUp()
 
 update_status ModuleSceneIntro::Update()
 {
-	SDL_Rect leftInactiveArrow = { 800,60,40,20 };
-	SDL_Rect leftActiveArrow = { 800,60,40,20 };
-	mouse.x = App->input->GetMouseX();
-	mouse.y = App->input->GetMouseY();
-
-	if (mouse.x > leftInactiveArrow.x && mouse.x<(leftInactiveArrow.x + leftInactiveArrow.w)
-		&& mouse.y>leftInactiveArrow.y && mouse.y < (leftInactiveArrow.y + leftInactiveArrow.h)) {
-
-		App->renderer->DrawQuad(leftActiveArrow, 116, 190, 227);
-
-		if (App->input->GetMouseButtonDown(1) == KEY_DOWN) 
-		{
-			App->renderer->DrawQuad(leftActiveArrow, 255, 0, 0);
-			App->physics->atmosphere.windx -= 100;
-		}
+	//Aumentar el viento hacia derecha
+	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	{
+		App->physics->atmosphere.windx += 10;
 	}
-	else App->renderer->DrawQuad(leftInactiveArrow, 112, 33, 166);
 
-
-	SDL_Rect rightInactiveArrow = { 900,60,40,20 };
-	SDL_Rect rightActiveArrow = { 900,60,40,20 };
-
-	if (mouse.x > rightInactiveArrow.x && mouse.x<(rightInactiveArrow.x + rightInactiveArrow.w)
-		&& mouse.y>rightInactiveArrow.y && mouse.y < (rightInactiveArrow.y + rightInactiveArrow.h)) {
-
-		App->renderer->DrawQuad(rightInactiveArrow, 116, 190, 227);
-
-		if (App->input->GetMouseButtonDown(1) == KEY_DOWN) 
-		{
-			App->renderer->DrawQuad(rightActiveArrow, 255, 0, 0);
-			App->physics->atmosphere.windx += 100;
-		}
+	//Aumentar el viento hacia la izquierda
+	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+	{
+		App->physics->atmosphere.windx -= 10;
 	}
-	else App->renderer->DrawQuad(rightInactiveArrow, 112, 33, 166);
 
-	SDL_Rect upInactiveArrow = { 700,20,20,40 };
-	SDL_Rect upActiveArrow = { 700,20,20,40 };
-	mouse.x = App->input->GetMouseX();
-	mouse.y = App->input->GetMouseY();
-
-	if (mouse.x > upInactiveArrow.x && mouse.x<(upInactiveArrow.x + upInactiveArrow.w)
-		&& mouse.y>upInactiveArrow.y && mouse.y < (upInactiveArrow.y + upInactiveArrow.h)) {
-
-		App->renderer->DrawQuad(upInactiveArrow, 116, 190, 227);
-		if (App->input->GetMouseButtonDown(1) == KEY_DOWN) 
-		{
-			App->renderer->DrawQuad(upInactiveArrow, 255, 0, 0);
-			App->physics->gravity_y -= 100;
-		}
+	//Aumentar la gravedad
+	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+	{
+		App->physics->gravity_y -= 10;
 	}
-	else App->renderer->DrawQuad(upInactiveArrow, 112, 33, 166);
 
-
-	SDL_Rect downInactiveArrow = { 700,90,20,40 };
-	SDL_Rect downtActiveArrow = { 700,90,20,40 };
-
-	if (mouse.x > downInactiveArrow.x && mouse.x<(downInactiveArrow.x + downInactiveArrow.w)
-		&& mouse.y>downInactiveArrow.y && mouse.y < (downInactiveArrow.y + downInactiveArrow.h)) {
-
-		App->renderer->DrawQuad(downInactiveArrow, 116, 190, 227);
-		if (App->input->GetMouseButtonDown(1) == KEY_DOWN)
-		{
-			App->renderer->DrawQuad(downInactiveArrow, 255, 0, 0);
-			App->physics->gravity_y += 100;
-		}
+	//Disminuir la gravedad
+	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+	{
+		App->physics->gravity_y += 10;
 	}
-	else App->renderer->DrawQuad(downInactiveArrow, 112, 33, 166);
 
+	//Printar valores
 	TextDraw(App->physics->atmosphere.windx, 5, 326, 80, 16, 0.4);
 	TextDraw(App->physics->atmosphere.windy, 5, 326, 115, 16, 0.4);
-	TextDraw(App->physics->gravity_x/100, 5, 326, 10, 16, 0.4);
-	TextDraw(App->physics->gravity_y/100, 5, 326, 45, 16, 0.4);
+	TextDraw(App->physics->gravity_x, 5, 326, 10, 16, 0.4);
+	TextDraw(App->physics->gravity_y, 5, 326, 45, 16, 0.4);
 
+	//Printar nombres/letras
 	SDL_Rect g_x = { 861, 140, 380, 55 };
 	App->renderer->Blit(variables, 76, 10, &g_x, 0.4);
 	SDL_Rect g_y = { 867, 212, 380, 55 };
@@ -133,6 +91,7 @@ update_status ModuleSceneIntro::Update()
 	SDL_Rect w_y = { 966, 356, 276, 55 };
 	App->renderer->Blit(variables, 115, 115, &w_y, 0.4);
 
+	//Printar integradores
 	if (App->physics->integrator == ModulePhysics::Integrator_Type::VERLET)
 	{
 		SDL_Rect ver = { 24, 214, 1120, 55 };
@@ -149,22 +108,17 @@ update_status ModuleSceneIntro::Update()
 		App->renderer->Blit(integrador, 10, 220, &ver, 0.4);
 	}
 
+	//Printar FPS
 	if (App->physics->dt == 0.0167f)
 	{
 		SDL_Rect fps60 = { 24, 69, 1120, 55 };
 		App->renderer->Blit(fps, 10, 255, &fps60, 0.4);
 	}
-	else if (App->physics->dt == 0.0333f)
+	else if (App->physics->dt == 0.033f)
 	{
 		SDL_Rect fps30 = { 24, 141, 1120, 55 };
 		App->renderer->Blit(fps, 10, 255, &fps30, 0.4);
 	}
-
-	SDL_Rect f_g = { 861, 140, 40, 55 };
-	App->renderer->Blit(variables, 697, 62, &f_g, 0.4);
-
-	SDL_Rect f_w = { 966, 284, 55, 55 };
-	App->renderer->Blit(variables, 855, 55, &f_w, 0.4);
 
 	return UPDATE_CONTINUE;
 }
