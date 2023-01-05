@@ -40,7 +40,7 @@ bool ModulePlayer::Start()
 	ballp.vy = .0f;
 	
 	// Add ball to the collection
-	balls.emplace_back(ballp);
+	App->physics->balls.emplace_back(ballp);
 
 	PhysBall ballp2 = PhysBall();
 
@@ -61,7 +61,7 @@ bool ModulePlayer::Start()
 	ballp2.vy = .0f;
 
 	// Add ball to the collection
-	balls.emplace_back(ballp2);
+	App->physics->balls.emplace_back(ballp2);
 
 	return true;
 }
@@ -77,120 +77,17 @@ bool ModulePlayer::CleanUp()
 // Update: draw background
 update_status ModulePlayer::Update()
 {
-	
-	// Process all balls in the scenario
-	for (auto& ball : balls)
-	{
-		// Skip ball if physics not enabled
-		if (!ball.physics_enabled)
-		{
-			continue;
-		}
-
-		// Step #0: Clear old values
-		// ----------------------------------------------------------------------------------------
-
-		// Reset total acceleration and total accumulated force of the ball
-		ball.fx = ball.fy = 0.0f;
-		ball.ax = ball.ay = 0.0f;
-
-		// Step #1: Compute forces
-		// ----------------------------------------------------------------------------------------
-
-		// Gravity force
-		float fgx = ball.mass * 0.0f;
-		float fgy = ball.mass * -10.0f; // Let's assume gravity is constant and downwards
-		ball.fx += fgx; ball.fy += fgy; // Add this force to ball's total force
-
-		// Aerodynamic Drag force (only when not in water)
-		if (!is_colliding_with_water(ball, App->physics->water))
-		{
-			float fdx = 0.0f; float fdy = 0.0f;
-			compute_aerodynamic_drag(fdx, fdy, ball, App->physics->atmosphere);
-			ball.fx += fdx; ball.fy += fdy; // Add this force to ball's total force
-		}
-
-		// Hydrodynamic forces (only when in water)
-		if (is_colliding_with_water(ball, App->physics->water))
-		{
-			// Hydrodynamic Drag force
-			float fhdx = 0.0f; float fhdy = 0.0f;
-			compute_hydrodynamic_drag(fhdx, fhdy, ball, App->physics->water);
-			ball.fx += fhdx; ball.fy += fhdy; // Add this force to ball's total force
-
-			// Hydrodynamic Buoyancy force
-			float fhbx = 0.0f; float fhby = 0.0f;
-			compute_hydrodynamic_buoyancy(fhbx, fhby, ball, App->physics->water);
-			ball.fx += fhbx; ball.fy += fhby; // Add this force to ball's total force
-		}
-
-		// Other forces
-		// ...
-
-		// Step #2: 2nd Newton's Law
-		// ----------------------------------------------------------------------------------------
-
-		// SUM_Forces = mass * accel --> accel = SUM_Forces / mass
-		ball.ax = ball.fx / ball.mass;
-		ball.ay = ball.fy / ball.mass;
-
-		// Step #3: Integrate --> from accel to new velocity & new position
-		// ----------------------------------------------------------------------------------------
-
-		// We will use the 2nd order "Velocity Verlet" method for integration.
-		integrator_velocity_verlet(ball, dt);
-
-		// Step #4: solve collisions
-		// ----------------------------------------------------------------------------------------
-
-		// Solve collision between ball and ground
-		if (is_colliding_with_ground(ball, App->physics->ground))
-		{
-			// TP ball to ground surface
-			ball.y = App->physics->ground.y + App->physics->ground.h + ball.radius;
-
-			// Elastic bounce with ground
-			ball.vy = -ball.vy;
-
-			// FUYM non-elasticity
-			ball.vx *= ball.coef_friction;
-			ball.vy *= ball.coef_restitution;
-		}
-		if (is_colliding_with_ground(ball, App->physics->ground2))
-		{
-
-			// Elastic bounce with ground
-			ball.vy = -ball.vy;
-
-			// FUYM non-elasticity
-			ball.vx *= ball.coef_friction;
-			ball.vy *= ball.coef_restitution;
-		}
-		if (is_colliding_with_ground(ball, App->physics->ground3))
-		{
-
-			// Elastic bounce with ground
-			ball.vy = -ball.vy;
-
-			// FUYM non-elasticity
-			ball.vx *= ball.coef_friction;
-			ball.vy *= ball.coef_restitution;
-		}
-
-	}
-
-
 	//Player1 Turn
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && turn1 == true) {
 
-			for (auto& ballp : balls)
+			for (auto& ball : App->physics->balls)
 			{
 				// Skip ball if physics not enabled
-				if (!ballp.physics_enabled)
+				if (!ball.physics_enabled)
 				{
 					continue;
 				}
-				ballp.vx = 10.0f;
+				ball.vx = 10.0f;
 			}
 
 
@@ -198,7 +95,7 @@ update_status ModulePlayer::Update()
 
 
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && turn1 == true) {
-			for (auto& ballp : balls)
+			for (auto& ballp : App->physics->balls)
 			{
 				// Skip ball if physics not enabled
 				if (!ballp.physics_enabled)
@@ -209,7 +106,7 @@ update_status ModulePlayer::Update()
 			}
 		}
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && turn1 == true) {
-			for (auto& ballp : balls)
+			for (auto& ballp : App->physics->balls)
 			{
 				// Skip ball if physics not enabled
 				if (!ballp.physics_enabled)
@@ -220,7 +117,7 @@ update_status ModulePlayer::Update()
 			}
 		}
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && turn1 == true) {
-			for (auto& ballp : balls)
+			for (auto& ballp : App->physics->balls)
 			{
 				// Skip ball if physics not enabled
 				if (!ballp.physics_enabled)
@@ -237,7 +134,7 @@ update_status ModulePlayer::Update()
 
 			if (turn1)
 			{
-				for (auto& ballp : balls)
+				for (auto& ballp : App->physics->balls)
 				{
 					App->physics->Shoot(ballp.x, ballp.y);
 					turn1 = false;
@@ -245,7 +142,7 @@ update_status ModulePlayer::Update()
 			}
 			else if (!turn1)
 			{
-				for (auto& ballp2 : balls)
+				for (auto& ballp2 : App->physics->balls)
 				{
 					App->physics->Shoot(ballp2.x, ballp2.y);
 					turn1 = true;
@@ -253,7 +150,7 @@ update_status ModulePlayer::Update()
 			}
 		}
 		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && turn1 == true) {
-			for (auto& ballp : balls)
+			for (auto& ballp : App->physics->balls)
 			{
 				// Skip ball if physics not enabled
 				if (!ballp.physics_enabled)
@@ -271,7 +168,7 @@ update_status ModulePlayer::Update()
 	//Player 2 turn
 		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && turn1 == false) {
 
-			for (auto& ballp2 : balls)
+			for (auto& ballp2 : App->physics->balls)
 			{
 				// Skip ball if physics not enabled
 				if (!ballp2.physics_enabled)
@@ -286,7 +183,7 @@ update_status ModulePlayer::Update()
 
 
 		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && turn1 == false) {
-			for (auto& ballp2 : balls)
+			for (auto& ballp2 : App->physics->balls)
 			{
 				// Skip ball if physics not enabled
 				if (!ballp2.physics_enabled)
@@ -297,7 +194,7 @@ update_status ModulePlayer::Update()
 			}
 		}
 		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && turn1 == false) {
-			for (auto& ballp2 : balls)
+			for (auto& ballp2 : App->physics->balls)
 			{
 				// Skip ball if physics not enabled
 				if (!ballp2.physics_enabled)
@@ -308,7 +205,7 @@ update_status ModulePlayer::Update()
 			}
 		}
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && turn1 == false) {
-			for (auto& ballp2 : balls)
+			for (auto& ballp2 : App->physics->balls)
 			{
 				// Skip ball if physics not enabled
 				if (!ballp2.physics_enabled)
@@ -323,7 +220,7 @@ update_status ModulePlayer::Update()
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN && turn1 == false) {
-			for (auto& ballp2 : balls)
+			for (auto& ballp2 : App->physics->balls)
 			{
 				// Skip ball if physics not enabled
 				if (!ballp2.physics_enabled)
@@ -339,7 +236,7 @@ update_status ModulePlayer::Update()
 			}
 		}
 	
-	for (auto& ballp : balls)
+	for (auto& ballp : App->physics->balls)
 	{
 		// Colors
 		int color_r, color_g, color_b;
@@ -364,7 +261,7 @@ update_status ModulePlayer::Update()
 		App->renderer->DrawCircle(pos_x, pos_y, size_r, color_r, color_g, color_b);
 	}
 
-	for (auto& ballp2 : balls)
+	for (auto& ballp2 : App->physics->balls)
 	{
 		// Colors
 		int color_r, color_g, color_b;

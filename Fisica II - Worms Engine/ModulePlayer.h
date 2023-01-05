@@ -47,9 +47,6 @@ public:
 
 	bool turn1 = true;
 
-	std::vector<PhysBall> balls{};
-	PhysBall a;
-
 	// Misc
 	float dt = 1.0 / 60.0;
 };

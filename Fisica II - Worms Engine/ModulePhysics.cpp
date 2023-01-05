@@ -58,28 +58,6 @@ bool ModulePhysics::Start()
 	atmosphere.windy = 5.0f; // [m/s]
 	atmosphere.density = 1.0f; // [kg/m^3]
 
-	// Create a ball
-	PhysBall ball1 = PhysBall();
-
-	// Set static properties of the ball
-	ball1.mass = 10.0f; // [kg]
-	ball1.surface = 1.0f; // [m^2]
-	ball1.radius = 0.8f; // [m]
-	ball1.cd = 0.4f; // [-]
-	ball1.cl = 1.2f; // [-]
-	ball1.b = 10.0f; // [...]
-	ball1.coef_friction = 0.9f; // [-]
-	ball1.coef_restitution = 0.8f; // [-]
-
-	// Set initial position and velocity of the ball
-	ball1.x = 2.0f;
-	ball1.y = (ground.y + ground.h) + 2.0f;
-	ball1.vx = .0f;
-	ball1.vy = .0f;
-
-	// Add ball to the collection
-	balls.emplace_back(ball1);
-
 	return true;
 }
 
@@ -158,6 +136,32 @@ update_status ModulePhysics::PreUpdate()
 
 			// Elastic bounce with ground
 			ball.vy = - ball.vy;
+
+			// FUYM non-elasticity
+			ball.vx *= ball.coef_friction;
+			ball.vy *= ball.coef_restitution;
+		}
+
+		if (is_colliding_with_ground(ball, ground2))
+		{
+			// TP ball to ground surface
+			ball.y = ground2.y + ground2.h + ball.radius;
+
+			// Elastic bounce with ground
+			ball.vy = -ball.vy;
+
+			// FUYM non-elasticity
+			ball.vx *= ball.coef_friction;
+			ball.vy *= ball.coef_restitution;
+		}
+
+		if (is_colliding_with_ground(ball, ground3))
+		{
+			// TP ball to ground surface
+			ball.y = ground3.y + ground3.h + ball.radius;
+
+			// Elastic bounce with ground
+			ball.vy = -ball.vy;
 
 			// FUYM non-elasticity
 			ball.vx *= ball.coef_friction;
@@ -325,7 +329,7 @@ void ModulePhysics::Shoot(int x, int y)
 	PhysBall projectile = PhysBall();
 
 	// Set physics properties of the ball
-	projectile.mass = 10.0f; // [kg]
+	projectile.mass = 5.0f; // [kg]
 	projectile.radius = 0.6f; // [m]
 	projectile.surface = projectile.radius * M_PI; // [m^2]
 	projectile.cd = 0.4f; // [-]
@@ -340,7 +344,5 @@ void ModulePhysics::Shoot(int x, int y)
 	projectile.vx = 20.0f;
 	projectile.vy = 15.0f;
 
-	projectile.cd = 0.4;
-
-	App->player->balls.emplace_back(projectile);
+	balls.emplace_back(projectile);
 }
