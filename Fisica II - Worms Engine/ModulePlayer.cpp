@@ -97,8 +97,6 @@ update_status ModulePlayer::Update()
 				}
 				App->physics->players.front().vx = 10.0f;
 			}
-			
-
 		}
 
 
@@ -142,19 +140,19 @@ update_status ModulePlayer::Update()
 
 			if (turn1)
 			{
-				for (auto& ballp : App->physics->players)
-				{
-					App->physics->Shoot(ballp.x, ballp.y);
-					turn1 = false;
-				}
+
+				App->physics->CleanProjectiles();
+				App->physics->Shoot(App->physics->players.at(0).x, App->physics->players.at(0).y, 20,15);//***
+				turn1 = false;
+
 			}
-			else if (!turn1)
+			else
 			{
-				for (auto& ballp2 : App->physics->players)
-				{
-					App->physics->Shoot(ballp2.x, ballp2.y);
-					turn1 = true;
-				}
+
+				App->physics->CleanProjectiles();
+				App->physics->Shoot(App->physics->players.at(1).x, App->physics->players.at(1).y, -20,15);//***
+				turn1 = true;
+
 			}
 		}
 		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && turn1 == true) {

@@ -90,7 +90,8 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
-	void Shoot(int x, int y);
+	void Shoot(int x, int y, int vx, int vy);
+	void CleanProjectiles();
 
 	// Physics objects
 	std::vector<PhysBall> players{};

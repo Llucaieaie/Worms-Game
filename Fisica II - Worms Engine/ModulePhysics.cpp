@@ -132,12 +132,8 @@ update_status ModulePhysics::PreUpdate()
 		if (is_colliding_with_ground(ball, ground))
 		{
 			// TP ball to ground surface
-			if(ball.y >= ground.y + ground.h + ball.radius-0.5)
-				ball.y = ground.y + ground.h + ball.radius;
-			else if (ball.y == ground.y + ball.radius)
-				ball.y = ground.y + ball.radius;
-			else
-				ball.x = ground.x + ground.x + ball.radius;
+			ball.y = ground.y + ground.h + ball.radius;
+
 			// Elastic bounce with ground
 			ball.vy = -ball.vy;
 
@@ -320,6 +316,9 @@ update_status ModulePhysics::PostUpdate()
 		App->renderer->DrawCircle(pos_x, pos_y, size_r, color_r, color_g, color_b);
 	}
 
+	//Clear balls in the scenario
+
+
 	if ((App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) && dt == 0.0167f)
 	{
 		dt = 0.033f;
@@ -475,12 +474,11 @@ SDL_Rect Ground::pixels()
 }
 
 
-void ModulePhysics::Shoot(int x, int y)
+void ModulePhysics::Shoot(int x, int y, int vx, int vy)
 {
 	PhysBall projectile = PhysBall();
-
 	// Set physics properties of the ball
-	projectile.mass = 5.0f; // [kg]
+	projectile.mass = 20.0f; // [kg]
 	projectile.radius = 0.6f; // [m]
 	projectile.surface = projectile.radius * M_PI; // [m^2]
 	projectile.cd = 0.4f; // [-]
@@ -492,8 +490,13 @@ void ModulePhysics::Shoot(int x, int y)
 	// Set initial position and velocity of the ball
 	projectile.x = x;
 	projectile.y = y;
-	projectile.vx = 20.0f;
-	projectile.vy = 15.0f;
+	projectile.vx = vx;
+	projectile.vy = vy;
 
 	balls.emplace_back(projectile);
+}
+
+void ModulePhysics::CleanProjectiles()
+{
+	balls.clear();
 }
