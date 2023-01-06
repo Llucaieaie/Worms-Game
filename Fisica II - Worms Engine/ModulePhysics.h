@@ -49,6 +49,9 @@ public:
 
 	// Has physics enabled?
 	bool physics_enabled = true;
+
+	// Is it on air?
+	bool onair = false;
 };
 
 // Class: Ground
@@ -136,5 +139,11 @@ bool is_colliding_with_ground(const PhysBall& ball, const Ground& ground);
 // Detect collision with water
 bool is_colliding_with_water(const PhysBall& ball, const Water& water);
 
+// Detect collision between two balls
+bool is_colliding_with_ball(const PhysBall& ball, const PhysBall& ball2);
+
 // Detect collision between circle and rectange
 bool check_collision_circle_rectangle(float cx, float cy, float cr, float rx, float ry, float rw, float rh);
+
+// Detect collision between two circles
+bool check_collision_circle_circle(float cx, float cy, float cr, float cx2, float cy2, float cr2);

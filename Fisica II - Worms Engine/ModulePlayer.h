@@ -31,6 +31,8 @@ public:
 
 	PhysBody* sensor1;
 
+	// Create players
+	PhysBall ballp = PhysBall();
 	PhysBall ballp2 = PhysBall();
 
 	bool turn1 = true;

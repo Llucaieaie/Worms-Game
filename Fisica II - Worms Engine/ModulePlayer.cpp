@@ -19,12 +19,8 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 	
-
-	// Create a ball
-	PhysBall ballp = PhysBall();
-
 	// Set static properties of the ball
-	ballp.mass = 40.0f; // [kg]
+	ballp.mass = 100.0f; // [kg]
 	ballp.radius = 1.8f; // [m]
 	ballp.surface = ballp.radius * M_PI; // [m^2]
 	ballp.cd = 0.4f; // [-]
@@ -45,14 +41,14 @@ bool ModulePlayer::Start()
 	
 
 	// Set static properties of the ball
-	ballp2.mass = 40.0f; // [kg]
-	ballp2.radius = 1.8f; // [m]
-	ballp2.surface = ballp2.radius * M_PI; // [m^2]
-	ballp2.cd = 0.4f; // [-]
-	ballp2.cl = 1.2f; // [-]
-	ballp2.b = 10.0f; // [...]
-	ballp2.coef_friction = 0.0f; // [-]
-	ballp2.coef_restitution = 0.0f; // [-]
+	ballp2.mass = ballp.mass;
+	ballp2.radius = ballp.radius;
+	ballp2.surface = ballp.surface;
+	ballp2.cd = ballp.cd;
+	ballp2.cl = ballp.cl;
+	ballp2.b = ballp.b;
+	ballp2.coef_friction = ballp.coef_friction;
+	ballp2.coef_restitution = ballp.coef_restitution;
 
 	// Set initial position and velocity of the ball
 	ballp2.x = 40.0f;
@@ -111,28 +107,13 @@ update_status ModulePlayer::Update()
 				App->physics->players.front().vx = -10.0f;
 			}
 		}
-		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && turn1 == true) {
-			for (auto& ballp : App->physics->players)
-			{
-				// Skip ball if physics not enabled
-				if (!ballp.physics_enabled)
-				{
-					continue;
-				}
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && turn1 == true) {
+			if (!App->physics->players.front().onair)
 				App->physics->players.front().vy = 10.0f;
-			}
 		}
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && turn1 == true) {
-			for (auto& ballp : App->physics->players)
-			{
-				// Skip ball if physics not enabled
-				if (!ballp.physics_enabled)
-				{
-					continue;
-				}
+			if (!App->physics->players.front().onair)
 				App->physics->players.front().vy = 10.0f;
-
-			}
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
@@ -142,7 +123,7 @@ update_status ModulePlayer::Update()
 			{
 
 				App->physics->CleanProjectiles();
-				App->physics->Shoot(App->physics->players.at(0).x, App->physics->players.at(0).y, 20,15);//***
+				App->physics->Shoot(App->physics->players.at(0).x + App->physics->players.at(0).radius*2, App->physics->players.at(0).y + App->physics->players.at(0).radius, 20,15);//***
 				turn1 = false;
 
 			}
@@ -150,7 +131,7 @@ update_status ModulePlayer::Update()
 			{
 
 				App->physics->CleanProjectiles();
-				App->physics->Shoot(App->physics->players.at(1).x, App->physics->players.at(1).y, -20,15);//***
+				App->physics->Shoot(App->physics->players.at(1).x - App->physics->players.at(1).radius*2, App->physics->players.at(1).y + App->physics->players.at(1).radius, -20, 15);//***
 				turn1 = true;
 
 			}
@@ -200,30 +181,13 @@ update_status ModulePlayer::Update()
 				App->physics->players.back().vx = -10.0f;
 			}
 		}
-		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && turn1 == false) {
-			for (auto& ballp2 : App->physics->players)
-			{
-				// Skip ball if physics not enabled
-				if (!ballp2.physics_enabled)
-				{
-					continue;
-				}
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && turn1 == false) {
+			if (!App->physics->players.back().onair)
 				App->physics->players.back().vy = 10.0f;
-			}
 		}
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && turn1 == false) {
-			for (auto& ballp2 : App->physics->players)
-			{
-				// Skip ball if physics not enabled
-				if (!ballp2.physics_enabled)
-				{
-					continue;
-				}
+			if (!App->physics->players.back().onair)
 				App->physics->players.back().vy = 10.0f;
-				//if (turn1 = false) {
-				//	ballp2.vy = 10.0f;
-				//}
-			}
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN && turn1 == false) {

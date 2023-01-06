@@ -4,6 +4,7 @@
 #include "ModulePlayer.h"
 #include "math.h"
 #include <cmath>
+using namespace std;
 
 // TODO 1: Include Box 2 header and library
 
@@ -74,6 +75,7 @@ update_status ModulePhysics::PreUpdate()
 
 		// Step #0: Clear old values
 		// ----------------------------------------------------------------------------------------
+		ball.onair = true;
 
 		// Reset total acceleration and total accumulated force of the ball
 		ball.fx = ball.fy = 0.0f;
@@ -140,9 +142,10 @@ update_status ModulePhysics::PreUpdate()
 			// FUYM non-elasticity
 			ball.vx *= ball.coef_friction;
 			ball.vy *= ball.coef_restitution;
+			ball.onair = false;
 		}
 
-		if (is_colliding_with_ground(ball, ground2))
+		else if (is_colliding_with_ground(ball, ground2))
 		{
 			// TP ball to ground surface
 			ball.y = ground2.y + ground2.h + ball.radius;
@@ -153,9 +156,10 @@ update_status ModulePhysics::PreUpdate()
 			// FUYM non-elasticity
 			ball.vx *= ball.coef_friction;
 			ball.vy *= ball.coef_restitution;
+			ball.onair = false;
 		}
 
-		if (is_colliding_with_ground(ball, ground3))
+		else if (is_colliding_with_ground(ball, ground3))
 		{
 			// TP ball to ground surface
 			ball.y = ground3.y + ground3.h + ball.radius;
@@ -166,6 +170,7 @@ update_status ModulePhysics::PreUpdate()
 			// FUYM non-elasticity
 			ball.vx *= ball.coef_friction;
 			ball.vy *= ball.coef_restitution;
+			ball.onair = false;
 		}
 	}
 	
@@ -273,6 +278,48 @@ update_status ModulePhysics::PreUpdate()
 			ball.vx *= ball.coef_friction;
 			ball.vy *= ball.coef_restitution;
 		}
+
+		// Solve collision between two balls
+		if (is_colliding_with_ball(ball, players.at(0)))
+		{
+			LOG("Player 1 colliding with ball");
+			// TP ball to ground surface
+			ball.y = players.at(0).y + players.at(0).radius + ball.radius;
+
+				// Elastic bounce with ground
+				ball.vy = -ball.vy;
+
+				// FUYM non-elasticity
+				ball.vx *= ball.coef_friction;
+				ball.vy *= ball.coef_restitution;
+		}
+
+		if (is_colliding_with_ball(ball, players.at(1)))
+		{
+			LOG("Player 2 colliding with ball");
+			// TP ball to ground surface
+			ball.y = players.at(1).y + players.at(1).radius + ball.radius;
+
+			// Elastic bounce with ground
+			ball.vy = -ball.vy;
+
+			// FUYM non-elasticity
+			ball.vx *= ball.coef_friction;
+			ball.vy *= ball.coef_restitution;
+		}
+	}
+	// Solve collision between two balls
+	if (is_colliding_with_ball(players.at(0), players.at(1)))
+	{
+		// TP ball to ground surface
+		players.at(0).y = players.at(1).y + players.at(1).radius + players.at(0).radius;
+
+		// Elastic bounce with ground
+		players.at(0).vy = -players.at(0).vy;
+
+		// FUYM non-elasticity
+		players.at(0).vx *= players.at(0).coef_friction;
+		players.at(0).vy *= players.at(0).coef_restitution;
 	}
 
 	// Continue game
@@ -438,6 +485,14 @@ bool is_colliding_with_water(const PhysBall& ball, const Water& water)
 	return check_collision_circle_rectangle(ball.x, ball.y, ball.radius, rect_x, rect_y, water.w, water.h);
 }
 
+//Detect collision with ball
+bool is_colliding_with_ball(const PhysBall& ball, const PhysBall& ball2)
+{
+	float rect_x = (ball2.x); // Center of circle
+	float rect_y = (ball2.y); // Center of circle
+	return check_collision_circle_circle(ball.x, ball.y, ball.radius, rect_x, rect_y, ball2.radius);
+}
+
 // Detect collision between circle and rectange
 bool check_collision_circle_rectangle(float cx, float cy, float cr, float rx, float ry, float rw, float rh)
 {
@@ -461,6 +516,16 @@ bool check_collision_circle_rectangle(float cx, float cy, float cr, float rx, fl
 	float cornerDistance_sq = a * a + b * b;
 	return (cornerDistance_sq <= (cr * cr));
 }
+
+// Detect collision between two circles
+bool check_collision_circle_circle(float cx, float cy, float cr, float cx2, float cy2, float cr2)
+{
+	float dist = sqrt(pow(cx - cx2, 2) + pow(cy - cy2, 2));
+	LOG("distancia: %d", dist);
+	if (dist > cr2+cr) { return false; }
+	if (dist <= cr2+cr) { return true; }
+}
+
 
 // Convert from meters to pixels (for SDL drawing)
 SDL_Rect Ground::pixels()
