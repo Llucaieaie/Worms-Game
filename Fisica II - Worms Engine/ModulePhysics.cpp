@@ -126,7 +126,9 @@ update_status ModulePhysics::PreUpdate()
 		// ----------------------------------------------------------------------------------------
 
 		// We will use the 2nd order "Velocity Verlet" method for integration.
-		integrator_velocity_verlet(ball, dt);
+		if( integrador == 1) integrator_velocity_verlet(ball, dt);
+		if (integrador == 2) integrator_euler_forward(ball, dt);
+		if (integrador == 3) integrator_euler_backward(ball, dt);
 
 		// Step #4: solve collisions
 		// ----------------------------------------------------------------------------------------
@@ -407,7 +409,7 @@ update_status ModulePhysics::PostUpdate()
 
 	//Clear balls in the scenario
 
-
+	// Change Delta-Time: 30fps/60fps
 	if ((App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) && dt == 0.0167f)
 	{
 		dt = 0.033f;
@@ -417,19 +419,27 @@ update_status ModulePhysics::PostUpdate()
 		dt = 0.0167f;
 	}
 
+	// Change Integration method: Euler Backward/Forward/Verlet
 	if (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
 	{
-		if (integrator == Integrator_Type::EULER_FORW) 
+		if (integrator == Integrator_Type::EULER_FORW)
+		{
 			integrator = Integrator_Type::VERLET;
-
+			integrador = 1;
+		}
+			
 		else if (integrator == Integrator_Type::VERLET)
+		{
 			integrator = Integrator_Type::EULER_BACK;
+			integrador = 3;
+		}
 
 		else if (integrator == Integrator_Type::EULER_BACK)
+		{
 			integrator = Integrator_Type::EULER_FORW;
+			integrador = 2;
+		}
 	}
-
-	
 
 	return UPDATE_CONTINUE;
 }

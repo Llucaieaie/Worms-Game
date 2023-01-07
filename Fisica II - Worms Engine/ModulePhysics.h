@@ -112,6 +112,7 @@ public:
 	float gravity_y = -10;
 
 	enum class Integrator_Type { VERLET, EULER_FORW, EULER_BACK }integrator = Integrator_Type::VERLET;
+	int integrador = 1;
 
 	int winner = 0;
 
@@ -134,6 +135,12 @@ void compute_hydrodynamic_buoyancy(float& fx, float& fy, const PhysBall& ball, c
 
 // Integration scheme: Velocity Verlet
 void integrator_velocity_verlet(PhysBall& ball, float dt);
+
+// Integration scheme: Euler Forward
+void integrator_euler_forward(PhysBall& ball, float dt);
+
+// Integration scheme: Euler Backward
+void integrator_euler_backward(PhysBall& ball, float dt);
 
 // Detect collision with ground
 bool is_colliding_with_ground(const PhysBall& ball, const Ground& ground);
