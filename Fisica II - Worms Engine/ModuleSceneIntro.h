@@ -85,6 +85,7 @@ public:
 
 	SDL_Texture* p1Win;
 	SDL_Texture* p2Win;
+	int timer = 0;
 
 	struct Mouse 
 	{

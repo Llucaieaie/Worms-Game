@@ -129,13 +129,55 @@ update_status ModuleSceneIntro::Update()
 	{
 		if (App->physics->winner == 1)
 		{
-			App->renderer->Blit(p1Win, 0, 300);
+			if (timer <= 300)
+			{
+				App->renderer->Blit(p1Win, 0, 300);
+				timer++;
+			}
+			else
+			{
+				timer = 0;
+				App->physics->winner = 0;
 
+				// Devolver a los players a la posicion inicial
+				App->physics->CleanProjectiles();
+
+				App->physics->players.at(0).x = 10.0f;
+				App->physics->players.at(0).y = (App->physics->ground.y + App->physics->ground.h) + 2.0f;
+				App->physics->players.at(0).vx = .0f;
+				App->physics->players.at(0).vy = .0f;
+
+				App->physics->players.at(1).x = 40.0f;
+				App->physics->players.at(1).y = (App->physics->ground.y + App->physics->ground.h) + 2.0f;
+				App->physics->players.at(1).vx = .0f;
+				App->physics->players.at(1).vy = .0f;
+			}
 		}
 		if (App->physics->winner == 2)
 		{
-			App->renderer->Blit(p2Win, 450, 250);
+			if (timer <= 300)
+			{
+				App->renderer->Blit(p2Win, 450, 250);
+				timer++;
+			}
+			else
+			{
+				timer = 0;
+				App->physics->winner = 0;
 
+				// Devolver a los players a la posicion inicial
+				App->physics->CleanProjectiles();
+
+				App->physics->players.at(0).x = 10.0f;
+				App->physics->players.at(0).y = (App->physics->ground.y + App->physics->ground.h) + 2.0f;
+				App->physics->players.at(0).vx = .0f;
+				App->physics->players.at(0).vy = .0f;
+
+				App->physics->players.at(1).x = 40.0f;
+				App->physics->players.at(1).y = (App->physics->ground.y + App->physics->ground.h) + 2.0f;
+				App->physics->players.at(1).vx = .0f;
+				App->physics->players.at(1).vy = .0f;
+			}
 		}
 	}
 
