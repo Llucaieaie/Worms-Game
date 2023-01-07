@@ -108,30 +108,30 @@ update_status ModuleSceneIntro::Update()
 	//Printar integradores
 	if (App->physics->integrator == ModulePhysics::Integrator_Type::VERLET)
 	{
-		SDL_Rect ver = { 24, 214, 1120, 55 };
-		App->renderer->Blit(integrador, 10, 220, &ver, 0.4);
+		SDL_Rect ver = { 24, 214, 700, 55 };
+		App->renderer->Blit(integrador, 10, 150, &ver, 0.4);
 	}
 	else if (App->physics->integrator == ModulePhysics::Integrator_Type::EULER_BACK)
 	{
-		SDL_Rect ver = { 24, 142, 1120, 55 };
-		App->renderer->Blit(integrador, 10, 220, &ver, 0.4);
+		SDL_Rect ver = { 24, 142, 1015, 55 };
+		App->renderer->Blit(integrador, 10, 150, &ver, 0.4);
 	}
 	else if (App->physics->integrator == ModulePhysics::Integrator_Type::EULER_FORW)
 	{
-		SDL_Rect ver = { 24, 70, 1120, 55 };
-		App->renderer->Blit(integrador, 10, 220, &ver, 0.4);
+		SDL_Rect ver = { 24, 70, 970, 55 };
+		App->renderer->Blit(integrador, 10, 150, &ver, 0.4);
 	}
 
 	//Printar FPS
 	if (App->physics->dt == 0.0167f)
 	{
-		SDL_Rect fps60 = { 24, 64, 1120, 70 };
-		App->renderer->Blit(fps, 10, 255, &fps60, 0.3);
+		SDL_Rect fps60 = { 24, 64, 260, 70 };
+		App->renderer->Blit(fps, 10, 180, &fps60, 0.3);
 	}
 	else if (App->physics->dt == 0.033f)
 	{
-		SDL_Rect fps30 = { 24, 150, 1120, 70 };
-		App->renderer->Blit(fps, 10, 255, &fps30, 0.3);
+		SDL_Rect fps30 = { 24, 150, 260, 70 };
+		App->renderer->Blit(fps, 10, 180, &fps30, 0.3);
 	}
 
 	//Printar imagen de victoria
