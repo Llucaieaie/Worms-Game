@@ -21,7 +21,13 @@ bool ModuleSceneIntro::Start()
 	/*App->renderer->camera.x = App->renderer->camera.y = 0;
 	scoreFont = App->fonts->Load("Assets/nesfont1.png", " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{:}~ª", 6);*/
 
-
+	background = App->textures->Load("Assets/background.png");
+	water = App->textures->Load("Assets/water.png");
+	platforms = App->textures->Load("Assets/platform.png");
+	player1 = App->textures->Load("Assets/Player1/Idle/0_Golem_Idle_000.png");
+	player2 = App->textures->Load("Assets/Player2/Idle/0_Golem_Idle_000_inv.png");
+	arma1 = App->textures->Load("Assets/Player1/Sword.png");
+	arma2 = App->textures->Load("Assets/Player2/Sword.png");
 	nombres = App->textures->Load("Assets/numeros.png");
 	variables = App->textures->Load("Assets/variables.png");
 	integrador = App->textures->Load("Assets/integradors.png");
@@ -55,6 +61,10 @@ bool ModuleSceneIntro::CleanUp()
 
 update_status ModuleSceneIntro::Update()
 {
+	//Print background
+	if(!App->physics->debug)
+		App->renderer->Blit(background, 0, 0, 0, 0.7);
+
 	//Aumentar el viento hacia derecha
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{

@@ -11,7 +11,6 @@ using namespace std;
 
 ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	debug = true;
 }
 
 // Destructor
@@ -357,44 +356,38 @@ update_status ModulePhysics::PostUpdate()
 	int color_r, color_g, color_b;
 
 	// Draw ground
-	color_r = 0; color_g = 255; color_b = 0;
-	App->renderer->DrawQuad(ground.pixels(), color_r, color_g, color_b);
-	App->renderer->DrawQuad(ground2.pixels(), color_r, color_g, color_b);
-	App->renderer->DrawQuad(ground3.pixels(), color_r, color_g, color_b);
+	if (debug)
+	{
+		color_r = 0; color_g = 255; color_b = 0;
+		App->renderer->DrawQuad(ground.pixels(), color_r, color_g, color_b);
+		App->renderer->DrawQuad(ground2.pixels(), color_r, color_g, color_b);
+		App->renderer->DrawQuad(ground3.pixels(), color_r, color_g, color_b);
+	}
+	else
+	{
+		App->renderer->Blit(App->scene_intro->platforms, 396, 316, 0, 1.3);
+		App->renderer->Blit(App->scene_intro->platforms, 96, 516, 0, 1.3);
+		App->renderer->Blit(App->scene_intro->platforms, 696, 516, 0, 1.3);
+	}
 
 	// Draw water
-	color_r = 0; color_g = 0; color_b = 255;
-	App->renderer->DrawQuad(water.pixels(), color_r, color_g, color_b);
-
-	// Draw all balls in the scenario
-	for (auto& players : App->physics->players)
+	if (debug)
 	{
-		// Convert from physical magnitudes to geometrical pixels
-		int pos_x = METERS_TO_PIXELS(players.x);
-		int pos_y = SCREEN_HEIGHT - METERS_TO_PIXELS(players.y);
-		int size_r = METERS_TO_PIXELS(players.radius);
-		// Select color
-		if (players.physics_enabled)
-		{
-			color_r = 255; color_g = 255; color_b = 255;
-		}
-		else
-		{
-			color_r = 255; color_g = 0; color_b = 0;
-		}
+		color_r = 0; color_g = 0; color_b = 255;
+		App->renderer->DrawQuad(water.pixels(), color_r, color_g, color_b);
+	}
+	else
+		App->renderer->Blit(App->scene_intro->water, 0, 195, 0, 0.7);
 
-		// Draw ball
-		App->renderer->DrawCircle(pos_x, pos_y, size_r, color_r, color_g, color_b);
-
-	}for (auto& ball : balls)
+	// Draw players in the scenario
+	auto& player1 = App->physics->players.front();
+	int pos_x = METERS_TO_PIXELS(player1.x);
+	int pos_y = SCREEN_HEIGHT - METERS_TO_PIXELS(player1.y);
+	int size_r = METERS_TO_PIXELS(player1.radius);
+	if (debug)
 	{
-		// Convert from physical magnitudes to geometrical pixels
-		int pos_x = METERS_TO_PIXELS(ball.x);
-		int pos_y = SCREEN_HEIGHT - METERS_TO_PIXELS(ball.y);
-		int size_r = METERS_TO_PIXELS(ball.radius);
-
 		// Select color
-		if (ball.physics_enabled)
+		if (player1.physics_enabled)
 		{
 			color_r = 255; color_g = 255; color_b = 255;
 		}
@@ -406,8 +399,84 @@ update_status ModulePhysics::PostUpdate()
 		// Draw ball
 		App->renderer->DrawCircle(pos_x, pos_y, size_r, color_r, color_g, color_b);
 	}
+	else
+		App->renderer->Blit(App->scene_intro->player1,pos_x-60, pos_y-76,0,0.15);
 
-	//Clear balls in the scenario
+	auto& player2 = App->physics->players.back();
+	int pos_x2 = METERS_TO_PIXELS(player2.x);
+	int pos_y2 = SCREEN_HEIGHT - METERS_TO_PIXELS(player2.y);
+	int size_r2 = METERS_TO_PIXELS(player2.radius);
+	if (debug)
+	{
+		// Select color
+		if (player2.physics_enabled)
+		{
+			color_r = 255; color_g = 255; color_b = 255;
+		}
+		else
+		{
+			color_r = 255; color_g = 0; color_b = 0;
+		}
+
+		// Draw ball
+		App->renderer->DrawCircle(pos_x2, pos_y2, size_r2, color_r, color_g, color_b);
+	}
+	else
+		App->renderer->Blit(App->scene_intro->player2, pos_x2 - 70, pos_y2 - 76, 0, 0.15);
+
+
+
+	LOG("debug: %d", debug);
+	//for (auto& players : App->physics->players)
+	//{
+	//	// Convert from physical magnitudes to geometrical pixels
+	//	int pos_x = METERS_TO_PIXELS(players.x);
+	//	int pos_y = SCREEN_HEIGHT - METERS_TO_PIXELS(players.y);
+	//	int size_r = METERS_TO_PIXELS(players.radius);
+	//	// Select color
+	//	if (players.physics_enabled)
+	//	{
+	//		color_r = 255; color_g = 255; color_b = 255;
+	//	}
+	//	else
+	//	{
+	//		color_r = 255; color_g = 0; color_b = 0;
+	//	}
+
+	//	// Draw ball
+	//	App->renderer->DrawCircle(pos_x, pos_y, size_r, color_r, color_g, color_b);
+
+	for (auto& ball : balls)
+	{
+		// Convert from physical magnitudes to geometrical pixels
+		int pos_x = METERS_TO_PIXELS(ball.x);
+		int pos_y = SCREEN_HEIGHT - METERS_TO_PIXELS(ball.y);
+		int size_r = METERS_TO_PIXELS(ball.radius);
+
+		if (debug)
+		{
+			// Select color
+			if (ball.physics_enabled)
+			{
+				color_r = 255; color_g = 255; color_b = 255;
+			}
+			else
+			{
+				color_r = 255; color_g = 0; color_b = 0;
+			}
+
+			// Draw ball
+			App->renderer->DrawCircle(pos_x, pos_y, size_r, color_r, color_g, color_b);
+		}
+		else
+		{
+			girar+=8;
+			if (girar > 360)
+				girar = 0;
+			App->renderer->Blit(App->scene_intro->arma1, pos_x-20, pos_y-5,NULL,.1f,0,girar);
+
+		}
+	}
 
 	// Change Delta-Time: 30fps/60fps
 	if ((App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) && dt == 0.0167f)
@@ -439,6 +508,12 @@ update_status ModulePhysics::PostUpdate()
 			integrator = Integrator_Type::EULER_FORW;
 			integrador = 2;
 		}
+	}
+
+
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	{
+		debug = !debug;
 	}
 
 	return UPDATE_CONTINUE;
@@ -599,7 +674,7 @@ void ModulePhysics::Shoot(int x, int y, int vx, int vy)
 	projectile.surface = projectile.radius * M_PI; // [m^2]
 	projectile.cd = 0.2f; // [-]
 	projectile.cl = 1.2f; // [-]
-	projectile.b = 10.0f; // [...]
+	projectile.b = 60.0f; // [...]
 	projectile.coef_friction = 0.7f; // [-]
 	projectile.coef_restitution = 0.8f; // [-]
 
