@@ -113,6 +113,8 @@ public:
 
 	enum class Integrator_Type { VERLET, EULER_FORW, EULER_BACK }integrator = Integrator_Type::VERLET;
 
+	int winner = 0;
+
 private:
 
 	bool debug;

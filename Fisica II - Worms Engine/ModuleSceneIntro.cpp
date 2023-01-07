@@ -36,6 +36,10 @@ bool ModuleSceneIntro::Start()
 	//App->physics->atmosphere.windy = App->physics->atmosphere.windy - 50;
 	//LOG("windy: %f", App->physics->atmosphere.windy);
 
+	// P1 Win texture
+	p1Win = App->textures->Load("Assets/p1Win.png");
+	p2Win = App->textures->Load("Assets/p2Win.png");
+
 	return ret;
 }
 
@@ -118,6 +122,21 @@ update_status ModuleSceneIntro::Update()
 	{
 		SDL_Rect fps30 = { 24, 150, 1120, 70 };
 		App->renderer->Blit(fps, 10, 255, &fps30, 0.3);
+	}
+
+	//Printar imagen de victoria
+	if (App->physics->winner != 0)
+	{
+		if (App->physics->winner == 1)
+		{
+			App->renderer->Blit(p1Win, 0, 300);
+
+		}
+		if (App->physics->winner == 2)
+		{
+			App->renderer->Blit(p2Win, 450, 250);
+
+		}
 	}
 
 	return UPDATE_CONTINUE;

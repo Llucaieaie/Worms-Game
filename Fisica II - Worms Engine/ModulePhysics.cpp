@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModulePhysics.h"
 #include "ModulePlayer.h"
+#include "ModuleRender.h"
 #include "math.h"
 #include <cmath>
 using namespace std;
@@ -283,29 +284,33 @@ update_status ModulePhysics::PreUpdate()
 		if (is_colliding_with_ball(ball, players.at(0)))
 		{
 			LOG("Player 1 colliding with ball");
-			// TP ball to ground surface
+			// TP ball to player surface
 			ball.y = players.at(0).y + players.at(0).radius + ball.radius;
 
-				// Elastic bounce with ground
-				ball.vy = -ball.vy;
-
-				// FUYM non-elasticity
-				ball.vx *= ball.coef_friction;
-				ball.vy *= ball.coef_restitution;
-		}
-
-		if (is_colliding_with_ball(ball, players.at(1)))
-		{
-			LOG("Player 2 colliding with ball");
-			// TP ball to ground surface
-			ball.y = players.at(1).y + players.at(1).radius + ball.radius;
-
-			// Elastic bounce with ground
+			// Elastic bounce with player
 			ball.vy = -ball.vy;
 
 			// FUYM non-elasticity
 			ball.vx *= ball.coef_friction;
 			ball.vy *= ball.coef_restitution;
+
+			winner = 2;
+		}
+
+		if (is_colliding_with_ball(ball, players.at(1)))
+		{
+			LOG("Player 2 colliding with ball");
+			// TP ball to player surface
+			ball.y = players.at(1).y + players.at(1).radius + ball.radius;
+
+			// Elastic bounce with player
+			ball.vy = -ball.vy;
+
+			// FUYM non-elasticity
+			ball.vx *= ball.coef_friction;
+			ball.vy *= ball.coef_restitution;
+
+			winner = 1;
 		}
 	}
 	// Solve collision between two balls
@@ -342,7 +347,26 @@ update_status ModulePhysics::PostUpdate()
 	App->renderer->DrawQuad(water.pixels(), color_r, color_g, color_b);
 
 	// Draw all balls in the scenario
-	for (auto& ball : balls)
+	for (auto& players : App->physics->players)
+	{
+		// Convert from physical magnitudes to geometrical pixels
+		int pos_x = METERS_TO_PIXELS(players.x);
+		int pos_y = SCREEN_HEIGHT - METERS_TO_PIXELS(players.y);
+		int size_r = METERS_TO_PIXELS(players.radius);
+		// Select color
+		if (players.physics_enabled)
+		{
+			color_r = 255; color_g = 255; color_b = 255;
+		}
+		else
+		{
+			color_r = 255; color_g = 0; color_b = 0;
+		}
+
+		// Draw ball
+		App->renderer->DrawCircle(pos_x, pos_y, size_r, color_r, color_g, color_b);
+
+	}for (auto& ball : balls)
 	{
 		// Convert from physical magnitudes to geometrical pixels
 		int pos_x = METERS_TO_PIXELS(ball.x);
@@ -521,7 +545,6 @@ bool check_collision_circle_rectangle(float cx, float cy, float cr, float rx, fl
 bool check_collision_circle_circle(float cx, float cy, float cr, float cx2, float cy2, float cr2)
 {
 	float dist = sqrt(pow(cx - cx2, 2) + pow(cy - cy2, 2));
-	LOG("distancia: %d", dist);
 	if (dist > cr2+cr) { return false; }
 	if (dist <= cr2+cr) { return true; }
 }
@@ -546,7 +569,7 @@ void ModulePhysics::Shoot(int x, int y, int vx, int vy)
 	projectile.mass = 20.0f; // [kg]
 	projectile.radius = 0.6f; // [m]
 	projectile.surface = projectile.radius * M_PI; // [m^2]
-	projectile.cd = 0.4f; // [-]
+	projectile.cd = 0.2f; // [-]
 	projectile.cl = 1.2f; // [-]
 	projectile.b = 10.0f; // [...]
 	projectile.coef_friction = 0.7f; // [-]

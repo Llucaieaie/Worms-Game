@@ -83,6 +83,9 @@ public:
 	SDL_Texture* fps;
 	SDL_Texture* arma;
 
+	SDL_Texture* p1Win;
+	SDL_Texture* p2Win;
+
 	struct Mouse 
 	{
 		int x, y;

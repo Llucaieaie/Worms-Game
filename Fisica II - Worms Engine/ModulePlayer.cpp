@@ -25,7 +25,7 @@ bool ModulePlayer::Start()
 	ballp.surface = ballp.radius * M_PI; // [m^2]
 	ballp.cd = 0.4f; // [-]
 	ballp.cl = 1.2f; // [-]
-	ballp.b = 10.0f; // [...]
+	ballp.b = 100.0f; // [...]
 	ballp.coef_friction = 0.0f; // [-]
 	ballp.coef_restitution = 0.0f; // [-]
 
@@ -125,7 +125,6 @@ update_status ModulePlayer::Update()
 				App->physics->CleanProjectiles();
 				App->physics->Shoot(App->physics->players.at(0).x + App->physics->players.at(0).radius*2, App->physics->players.at(0).y + App->physics->players.at(0).radius, 20,15);//***
 				turn1 = false;
-
 			}
 			else
 			{
@@ -207,56 +206,6 @@ update_status ModulePlayer::Update()
 			}
 		}
 	
-	for (auto& ballp : App->physics->players)
-	{
-		// Colors
-		int color_r, color_g, color_b;
-
-		// Draw ground
-		color_r = 0; color_g = 255; color_b = 0;
-		// Convert from physical magnitudes to geometrical pixels
-		int pos_x = METERS_TO_PIXELS(ballp.x);
-		int pos_y = SCREEN_HEIGHT - METERS_TO_PIXELS(ballp.y);
-		int size_r = METERS_TO_PIXELS(ballp.radius);
-		// Select color
-		if (ballp.physics_enabled)
-		{
-			color_r = 255; color_g = 255; color_b = 255;
-		}
-		else
-		{
-			color_r = 255; color_g = 0; color_b = 0;
-		}
-
-		// Draw ball
-		App->renderer->DrawCircle(pos_x, pos_y, size_r, color_r, color_g, color_b);
-	}
-
-	for (auto& ballp2 : App->physics->players)
-	{
-		// Colors
-		int color_r, color_g, color_b;
-
-		// Draw ground
-		color_r = 0; color_g = 255; color_b = 0;
-		// Convert from physical magnitudes to geometrical pixels
-		int pos_x = METERS_TO_PIXELS(ballp2.x);
-		int pos_y = SCREEN_HEIGHT - METERS_TO_PIXELS(ballp2.y);
-		int size_r = METERS_TO_PIXELS(ballp2.radius);
-		// Select color
-		if (ballp2.physics_enabled)
-		{
-			color_r = 255; color_g = 255; color_b = 255;
-		}
-		else
-		{
-			color_r = 255; color_g = 0; color_b = 0;
-		}
-
-		// Draw ball
-		App->renderer->DrawCircle(pos_x, pos_y, size_r, color_r, color_g, color_b);
-	}
-
 	return UPDATE_CONTINUE;
 }
 
