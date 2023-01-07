@@ -76,19 +76,19 @@ update_status ModuleSceneIntro::Update()
 	}
 
 	//Printar valores
-	TextDraw(App->physics->atmosphere.windx, 5, 326, 80, 16, 0.4);
-	TextDraw(App->physics->atmosphere.windy, 5, 326, 115, 16, 0.4);
-	TextDraw(App->physics->gravity_x, 5, 326, 10, 16, 0.4);
-	TextDraw(App->physics->gravity_y, 5, 326, 45, 16, 0.4);
+	TextDraw(App->physics->atmosphere.windx, 5, 380, 80, 25, 0.3);
+	TextDraw(App->physics->atmosphere.windy, 5, 380, 115, 25, 0.3);
+	TextDraw(App->physics->gravity_x, 5 , 380, 14, 25, 0.3);
+	TextDraw(App->physics->gravity_y, 5, 380, 45, 25, 0.3);
 
 	//Printar nombres/letras
-	SDL_Rect g_x = { 861, 140, 380, 55 };
+	SDL_Rect g_x = { 861, 127, 380, 55 };
 	App->renderer->Blit(variables, 76, 10, &g_x, 0.4);
-	SDL_Rect g_y = { 867, 212, 380, 55 };
+	SDL_Rect g_y = { 867, 199, 380, 55 };
 	App->renderer->Blit(variables, 76, 45, &g_y, 0.4);
-	SDL_Rect w_x = { 966, 284, 276, 55 };
+	SDL_Rect w_x = { 966, 271, 276, 55 };
 	App->renderer->Blit(variables, 115, 80, &w_x, 0.4);
-	SDL_Rect w_y = { 966, 356, 276, 55 };
+	SDL_Rect w_y = { 966, 343, 276, 55 };
 	App->renderer->Blit(variables, 115, 115, &w_y, 0.4);
 
 	//Printar integradores
@@ -111,13 +111,13 @@ update_status ModuleSceneIntro::Update()
 	//Printar FPS
 	if (App->physics->dt == 0.0167f)
 	{
-		SDL_Rect fps60 = { 24, 69, 1120, 55 };
-		App->renderer->Blit(fps, 10, 255, &fps60, 0.4);
+		SDL_Rect fps60 = { 24, 64, 1120, 70 };
+		App->renderer->Blit(fps, 10, 255, &fps60, 0.3);
 	}
 	else if (App->physics->dt == 0.033f)
 	{
-		SDL_Rect fps30 = { 24, 141, 1120, 55 };
-		App->renderer->Blit(fps, 10, 255, &fps30, 0.4);
+		SDL_Rect fps30 = { 24, 150, 1120, 70 };
+		App->renderer->Blit(fps, 10, 255, &fps30, 0.3);
 	}
 
 	return UPDATE_CONTINUE;
@@ -138,17 +138,18 @@ void ModuleSceneIntro::TextDraw(int score, int n, int posX, int posY, int separa
 		scoreCopia /= 10;
 	}
 
-	SDL_Rect rect0 = { 259, 65, 33, 40 };
-	SDL_Rect rect1 = { 25, 11, 20, 38 };
-	SDL_Rect rect2 = { 80, 10, 29, 40 };
-	SDL_Rect rect3 = { 141, 10, 30, 40 };
-	SDL_Rect rect4 = { 200, 11, 31, 38 };
-	SDL_Rect rect5 = { 261, 10, 29, 40 };
-	SDL_Rect rect6 = { 19, 65, 32, 40 };
-	SDL_Rect rect7 = { 82, 65, 26, 40 };
-	SDL_Rect rect8 = { 140, 65, 31, 40 };
-	SDL_Rect rect9 = { 199, 65, 32, 40 };
-	SDL_Rect rect_ = { 0, 113, 31, 11 };
+	//PosX, PosY, SizeX, SizeY
+	SDL_Rect rect0 = { 265, 106, 43, 65 };
+	SDL_Rect rect1 = { 0, 0, 44, 65 };
+	SDL_Rect rect2 = { 69, 0, 44, 65 };
+	SDL_Rect rect3 = { 135, 0, 44, 65 };
+	SDL_Rect rect4 = { 200, 0, 44, 65 };
+	SDL_Rect rect5 = { 262, 0, 44, 65 };
+	SDL_Rect rect6 = { 2, 105, 44, 65 };
+	SDL_Rect rect7 = { 69, 105, 44, 65 };
+	SDL_Rect rect8 = { 132, 105, 44, 65 };
+	SDL_Rect rect9 = { 200, 105, 44, 65 };
+	SDL_Rect rect_ = { 0, 280, 48, 10 };
 
 	for (int k = 0; k < n; ++k) {
 
