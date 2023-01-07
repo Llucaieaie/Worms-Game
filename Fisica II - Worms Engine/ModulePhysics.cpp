@@ -48,7 +48,7 @@ bool ModulePhysics::Start()
 	water = Water();
 	water.x = 0.0f; // Start where ground ends [m]
 	water.y = 0.0f; // [m]
-	water.w = 60.0f; // [m]
+	water.w = 120.0f; // [m]
 	water.h = 5.0f; // [m]
 	water.density = 50.0f; // [kg/m^3]
 	water.vx = -1.0f; // [m/s]
@@ -134,8 +134,11 @@ update_status ModulePhysics::PreUpdate()
 		// Solve collision between ball and ground
 		if (is_colliding_with_ground(ball, ground))
 		{
-			// TP ball to ground surface
-			ball.y = ground.y + ground.h + ball.radius;
+			// TP ball to ground surface ONLY if above ground!
+			if (ball.y <= ground.y + ground.h - ball.radius)
+				ball.y = ground.y - ball.radius;
+			else
+				ball.y = ground.y + ground.h + ball.radius;
 
 			// Elastic bounce with ground
 			ball.vy = -ball.vy;
@@ -149,7 +152,10 @@ update_status ModulePhysics::PreUpdate()
 		else if (is_colliding_with_ground(ball, ground2))
 		{
 			// TP ball to ground surface
-			ball.y = ground2.y + ground2.h + ball.radius;
+			if (ball.y <= ground2.y + ground2.h - ball.radius)
+				ball.y = ground2.y - ball.radius;
+			else
+				ball.y = ground2.y + ground2.h + ball.radius;
 
 			// Elastic bounce with ground
 			ball.vy = -ball.vy;
@@ -163,7 +169,10 @@ update_status ModulePhysics::PreUpdate()
 		else if (is_colliding_with_ground(ball, ground3))
 		{
 			// TP ball to ground surface
-			ball.y = ground3.y + ground3.h + ball.radius;
+			if (ball.y <= ground3.y + ground3.h - ball.radius)
+				ball.y = ground3.y - ball.radius;
+			else
+				ball.y = ground3.y + ground3.h + ball.radius;
 
 			// Elastic bounce with ground
 			ball.vy = -ball.vy;
@@ -243,8 +252,11 @@ update_status ModulePhysics::PreUpdate()
 		// Solve collision between ball and ground
 		if (is_colliding_with_ground(ball, ground))
 		{
-			// TP ball to ground surface
-			ball.y = ground.y + ground.h + ball.radius;
+			// TP ball to ground surface ONLY if above ground!
+			if (ball.y <= ground.y + ground.h - ball.radius)
+				ball.y = ground.y - ball.radius;
+			else
+				ball.y = ground.y + ground.h + ball.radius;
 
 			// Elastic bounce with ground
 			ball.vy = - ball.vy;
@@ -257,7 +269,10 @@ update_status ModulePhysics::PreUpdate()
 		if (is_colliding_with_ground(ball, ground2))
 		{
 			// TP ball to ground surface
-			ball.y = ground2.y + ground2.h + ball.radius;
+			if (ball.y <= ground2.y + ground2.h - ball.radius)
+				ball.y = ground2.y - ball.radius;
+			else
+				ball.y = ground2.y + ground2.h + ball.radius;
 
 			// Elastic bounce with ground
 			ball.vy = -ball.vy;
@@ -269,8 +284,11 @@ update_status ModulePhysics::PreUpdate()
 
 		if (is_colliding_with_ground(ball, ground3))
 		{
-			// TP ball to ground surface
-			ball.y = ground3.y + ground3.h + ball.radius;
+			// TP ball to ground surface 
+			if (ball.y <= ground3.y + ground3.h - ball.radius)
+				ball.y = ground3.y - ball.radius;
+			else
+				ball.y = ground3.y + ground3.h + ball.radius;
 
 			// Elastic bounce with ground
 			ball.vy = -ball.vy;

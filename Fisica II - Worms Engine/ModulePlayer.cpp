@@ -81,6 +81,7 @@ update_status ModulePlayer::Update()
 
 	}
 
+
 	//Player1 Turn
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && turn1 == true) {
 
@@ -94,7 +95,6 @@ update_status ModulePlayer::Update()
 				App->physics->players.front().vx = 10.0f;
 			}
 		}
-
 
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && turn1 == true) {
 			for (auto& ballp : App->physics->players)
@@ -162,12 +162,9 @@ update_status ModulePlayer::Update()
 				{
 					continue;
 				}
-				
 			}
 			App->physics->players.back().vx = 10.0f;
-
 		}
-
 
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && turn1 == false) {
 			for (auto& ballp2 : App->physics->players)
