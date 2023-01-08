@@ -129,15 +129,25 @@ update_status ModuleSceneIntro::Update()
 	}
 
 	//Printar FPS
-	if (App->physics->dt == 0.0167f)
+	if (App->physics->dt == 1.0f / 60.0f)
 	{
-		SDL_Rect fps60 = { 24, 64, 260, 70 };
+		SDL_Rect fps60 = { 24, 150, 260, 70 }; 
 		App->renderer->Blit(fps, 10, 180, &fps60, 0.3);
 	}
-	else if (App->physics->dt == 0.033f)
+	else if (App->physics->dt == 1.0f / 30.0f)
 	{
-		SDL_Rect fps30 = { 24, 150, 260, 70 };
+		SDL_Rect fps30 = { 24, 64, 260, 70 };
 		App->renderer->Blit(fps, 10, 180, &fps30, 0.3);
+	}
+	else if (App->physics->dt == 1.0f / 15.0f)
+	{
+		SDL_Rect fps15 = { 24, 240, 260, 70 };
+		App->renderer->Blit(fps, 10, 180, &fps15, 0.3);
+	}
+	else if (App->physics->dt == 1.0f / 5.0f)
+	{
+		SDL_Rect fps5 = { 24, 326, 260, 70 };
+		App->renderer->Blit(fps, 10, 180, &fps5, 0.3);
 	}
 
 	//Printar imagen de victoria

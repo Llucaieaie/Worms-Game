@@ -108,7 +108,7 @@ public:
 	Water water{};
 
 	// Misc
-	float dt = 0.0167f;
+	float dt = 1.0f / 60.0f;
 
 	float gravity_x = 0;
 	float gravity_y = -10;

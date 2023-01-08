@@ -297,11 +297,6 @@ update_status ModulePhysics::PreUpdate()
 			// FUYM non-elasticity
 			ball.vx *= ball.coef_friction;
 			ball.vy *= ball.coef_restitution;
-
-			if (rocked)
-			{
-				explosion = true;
-			}
 		}
 
 		if (is_colliding_with_ground(ball, ground2))
@@ -318,11 +313,6 @@ update_status ModulePhysics::PreUpdate()
 			// FUYM non-elasticity
 			ball.vx *= ball.coef_friction;
 			ball.vy *= ball.coef_restitution;
-
-			if (rocked)
-			{
-				explosion = true;
-			}
 		}
 
 		if (is_colliding_with_ground(ball, ground3))
@@ -339,24 +329,6 @@ update_status ModulePhysics::PreUpdate()
 			// FUYM non-elasticity
 			ball.vx *= ball.coef_friction;
 			ball.vy *= ball.coef_restitution;
-			if (rocked)
-			{
-				explosion = true;
-			}
-		}
-		if (explosion)
-		{
-			App->physics->balls.back().vx = 0.0f;
-			App->physics->balls.back().vy = 0.0f;
-			App->physics->balls.back().y = App->physics->balls.back().y;
-			
-			App->physics->balls.back().radius = App->physics->balls.back().radius + 0.1f;
-		}
-
-		if (App->physics->balls.back().radius > 2.0f)
-		{
-			App->physics->CleanProjectiles();
-			explosion = false;
 		}
 		if (is_colliding_with_ground(ball, wall1))
 		{
@@ -507,15 +479,12 @@ update_status ModulePhysics::PostUpdate()
 	}
 
 
-	// Change Delta-Time: 30fps/60fps
-	if ((App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) && dt == 0.0167f)
-	{
-		dt = 0.033f;
-	}
-	else if ((App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) && dt == 0.033f)
-	{
-		dt = 0.0167f;
-	}
+	// Change Delta-Time: 5fps / 15fps / 30fps / 60fps
+	if ((App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)) dt = 0.2f;
+	else if ((App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)) dt = 1.0f / 15.0f;
+	else if ((App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)) dt = 1.0f / 30.0f;
+	else if ((App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)) dt = 1.0f / 60.0f;
+
 
 	// Change Integration method: Euler Backward/Forward/Verlet
 	if (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
