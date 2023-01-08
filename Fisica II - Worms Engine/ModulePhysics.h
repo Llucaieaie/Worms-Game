@@ -103,6 +103,8 @@ public:
 	Ground ground{};
 	Ground ground2{};
 	Ground ground3{};
+	Ground wall1{};
+	Ground wall2{};
 	Water water{};
 
 	// Misc

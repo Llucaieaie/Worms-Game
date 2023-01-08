@@ -43,6 +43,20 @@ bool ModulePhysics::Start()
 	ground3.w = 10.0f; // [m]
 	ground3.h = 2.0f; // [m]
 
+	//Cerate wall
+	wall1 = Ground();
+	wall1.x = 0.0f; // [m]
+	wall1.y = 0.0f; // [m]
+	wall1.w = 0.5f; // [m]
+	wall1.h = 40.0f; // [m]
+
+	wall2 = Ground();
+	wall2.x = 51.0f; // [m]
+	wall2.y = 0.0f; // [m]
+	wall2.w = 0.5f; // [m]
+	wall2.h = 40.0f; // [m]
+
+
 	// Create Water
 	water = Water();
 	water.x = 0.0f; // Start where ground ends [m]
@@ -183,6 +197,38 @@ update_status ModulePhysics::PreUpdate()
 			ball.vy *= ball.coef_restitution;
 			ball.onair = false;
 		}
+		else if (is_colliding_with_ground(ball, wall1))
+		{
+			// TP ball to ground surface
+			//if (ball.y <= wall1.y + wall1.h - ball.radius)
+			//	ball.y = wall1.y - ball.radius;
+			//else
+			//	ball.y = wall1.y + wall1.h + ball.radius;
+
+			// Elastic bounce with ground
+			ball.vy = -ball.vy;
+
+			//FUYM non-elasticity
+			ball.vx *= ball.coef_friction;
+			ball.vy *= ball.coef_restitution;
+			ball.onair = false;
+		}
+		else if (is_colliding_with_ground(ball, wall2))
+		{
+			// TP ball to ground surface
+			//if (ball.y <= wall2.y + wall2.h - ball.radius)
+			//	ball.y = wall2.y - ball.radius;
+			//else
+			//	ball.y = wall2.y + wall2.h + ball.radius;
+
+			// Elastic bounce with ground
+			ball.vy = -ball.vy;
+
+			//FUYM non-elasticity
+			ball.vx *= ball.coef_friction;
+			ball.vy *= ball.coef_restitution;
+			ball.onair = false;
+		}
 	}
 	
 	// Process balls in the scenario
@@ -298,6 +344,21 @@ update_status ModulePhysics::PreUpdate()
 			ball.vx *= ball.coef_friction;
 			ball.vy *= ball.coef_restitution;
 		}
+		if (is_colliding_with_ground(ball, wall1))
+		{
+			// TP ball to ground surface 
+			if (ball.y <= wall1.y + wall1.h - ball.radius)
+				ball.y = wall1.y - ball.radius;
+			else
+				ball.y = wall1.y + wall1.h + ball.radius;
+
+			// Elastic bounce with ground
+			ball.vy = -ball.vy;
+
+			// FUYM non-elasticity
+			ball.vx *= ball.coef_friction;
+			ball.vy *= ball.coef_restitution;
+		}
 
 		// Solve collision between two balls
 		if (is_colliding_with_ball(ball, players.at(0)))
@@ -362,6 +423,8 @@ update_status ModulePhysics::PostUpdate()
 		App->renderer->DrawQuad(ground.pixels(), color_r, color_g, color_b);
 		App->renderer->DrawQuad(ground2.pixels(), color_r, color_g, color_b);
 		App->renderer->DrawQuad(ground3.pixels(), color_r, color_g, color_b);
+		App->renderer->DrawQuad(wall1.pixels(), color_r, color_g, color_b);
+		App->renderer->DrawQuad(wall2.pixels(), color_r, color_g, color_b);
 	}
 	else
 	{
