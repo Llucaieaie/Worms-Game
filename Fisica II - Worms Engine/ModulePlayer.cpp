@@ -175,6 +175,17 @@ update_status ModulePlayer::Update()
 			}
 		}
 
+		if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
+		{
+
+			App->physics->CleanProjectiles();
+			player1x = App->physics->players.at(0).x + App->physics->players.at(0).radius * 2;
+			player1y = App->physics->players.at(0).y + App->physics->players.at(0).radius;
+			App->physics->Shoot(player1x, player1y, cos(angleP1) * powerP1, sin(angleP1) * powerP1);
+			App->physics->rocked = true;
+			
+		}
+
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 		{
 			if (turn1)

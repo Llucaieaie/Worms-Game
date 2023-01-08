@@ -120,6 +120,9 @@ public:
 
 	int playerx, playery;
 
+	bool rocked = false;
+	bool explosion = false;
+
 private:
 
 	bool debug;
