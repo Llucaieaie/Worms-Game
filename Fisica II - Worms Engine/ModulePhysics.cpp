@@ -297,11 +297,6 @@ update_status ModulePhysics::PreUpdate()
 			// FUYM non-elasticity
 			ball.vx *= ball.coef_friction;
 			ball.vy *= ball.coef_restitution;
-
-			if (rocked)
-			{
-				explosion = true;
-			}
 		}
 
 		if (is_colliding_with_ground(ball, ground2))
@@ -318,11 +313,6 @@ update_status ModulePhysics::PreUpdate()
 			// FUYM non-elasticity
 			ball.vx *= ball.coef_friction;
 			ball.vy *= ball.coef_restitution;
-
-			if (rocked)
-			{
-				explosion = true;
-			}
 		}
 
 		if (is_colliding_with_ground(ball, ground3))
@@ -339,24 +329,6 @@ update_status ModulePhysics::PreUpdate()
 			// FUYM non-elasticity
 			ball.vx *= ball.coef_friction;
 			ball.vy *= ball.coef_restitution;
-			if (rocked)
-			{
-				explosion = true;
-			}
-		}
-		if (explosion)
-		{
-			App->physics->balls.back().vx = 0.0f;
-			App->physics->balls.back().vy = 0.0f;
-			App->physics->balls.back().y = App->physics->balls.back().y;
-			
-			App->physics->balls.back().radius = App->physics->balls.back().radius + 0.1f;
-		}
-
-		if (App->physics->balls.back().radius > 2.0f)
-		{
-			App->physics->CleanProjectiles();
-			explosion = false;
 		}
 		if (is_colliding_with_ground(ball, wall1))
 		{
