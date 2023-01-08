@@ -35,7 +35,17 @@ public:
 	PhysBall ballp = PhysBall();
 	PhysBall ballp2 = PhysBall();
 
+	// Set player turn
 	bool turn1 = true;
+
+	// To shorten things
+	int player1x, player1y, player2x, player2y;
+
+	// Angle and power of the shot
+	float angleP1 = DEGTORAD*15;
+	int powerP1 = 20;
+	float angleP2 = DEGTORAD * 15;
+	int powerP2 = 20;
 
 	// Misc
 	float dt = 1.0 / 60.0;

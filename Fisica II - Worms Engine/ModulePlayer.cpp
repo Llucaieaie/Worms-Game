@@ -116,21 +116,81 @@ update_status ModulePlayer::Update()
 				App->physics->players.front().vy = 10.0f;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 		{
-
 			if (turn1)
 			{
+				if(angleP1 < DEGTORAD * 90)
+					angleP1+=DEGTORAD;
+			}
+			else
+			{
+				if (angleP2 > DEGTORAD * -90)
+					angleP2 -= DEGTORAD;
+			}
+		}
 
-				App->physics->CleanProjectiles();
-				App->physics->Shoot(App->physics->players.at(0).x + App->physics->players.at(0).radius*2, App->physics->players.at(0).y + App->physics->players.at(0).radius, 20,15);//***
-				turn1 = false;
+		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		{
+			if (turn1)
+			{
+				if (angleP1 > DEGTORAD * -90)
+					angleP1 -= DEGTORAD;
 			}
 			else
 			{
 
+				if (angleP2 < DEGTORAD * 90)
+					angleP2 += DEGTORAD;
+			}
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+		{
+			if (turn1)
+			{
+				if (powerP1 < 40)
+					powerP1++;
+			}
+			else
+			{
+
+				if (powerP2 < 40)
+					powerP2++;
+			}
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+		{
+			if (turn1)
+			{
+				if (powerP1 > 5)
+					powerP1--;
+			}
+			else
+			{
+
+				if (powerP2 > 5)
+					powerP2--;
+			}
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+		{
+			if (turn1)
+			{
 				App->physics->CleanProjectiles();
-				App->physics->Shoot(App->physics->players.at(1).x - App->physics->players.at(1).radius*2, App->physics->players.at(1).y + App->physics->players.at(1).radius, -20, 15);//***
+				player1x = App->physics->players.at(0).x + App->physics->players.at(0).radius * 2;
+				player1y = App->physics->players.at(0).y + App->physics->players.at(0).radius;
+				App->physics->Shoot(player1x, player1y, cos(angleP1)*powerP1, sin(angleP1)*powerP1);
+				turn1 = false;
+			}
+			else
+			{
+				App->physics->CleanProjectiles();
+				player2x = App->physics->players.at(1).x - App->physics->players.at(1).radius * 2;
+				player2y = App->physics->players.at(1).y + App->physics->players.at(1).radius;
+				App->physics->Shoot(player2x, player2y, -cos(angleP2) * powerP1, sin(angleP2) * powerP1);
 				turn1 = true;
 
 			}

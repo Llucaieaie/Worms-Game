@@ -441,7 +441,9 @@ update_status ModulePhysics::PostUpdate()
 		// Draw ball
 		App->renderer->DrawCircle(pos_x, pos_y, size_r, color_r, color_g, color_b);
 
-	}for (auto& ball : balls)
+	}
+	
+	for (auto& ball : balls)
 	{
 		// Convert from physical magnitudes to geometrical pixels
 		int pos_x = METERS_TO_PIXELS(ball.x);
@@ -462,28 +464,18 @@ update_status ModulePhysics::PostUpdate()
 		App->renderer->DrawCircle(pos_x, pos_y, size_r, color_r, color_g, color_b);
 	}
 
-
-	
-	for (auto& ball : balls)
+	//Draw shooting preview line
+	if (App->player->turn1)
 	{
-		// Convert from physical magnitudes to geometrical pixels
-		int pos_x = METERS_TO_PIXELS(ball.x);
-		int pos_y = SCREEN_HEIGHT - METERS_TO_PIXELS(ball.y);
-		int size_r = METERS_TO_PIXELS(ball.radius);
-		// Select color
-		if (ball.physics_enabled)
-		{
-			color_r = 255; color_g = 255; color_b = 255;
-		}
-		else
-		{
-			color_r = 255; color_g = 0; color_b = 0;
-		}
-
-		// Draw ball
-		App->renderer->DrawCircle(pos_x, pos_y, size_r, color_r, color_g, color_b);
-
-
+		playerx = METERS_TO_PIXELS(App->physics->players.at(0).x) + METERS_TO_PIXELS(App->physics->players.at(0).radius);
+		playery = SCREEN_HEIGHT - METERS_TO_PIXELS(App->physics->players.at(0).y);
+		App->renderer->DrawLine(playerx, playery, playerx + cos(App->player->angleP1) * App->player->powerP1 * 2, playery - sin(App->player->angleP1) * App->player->powerP1 * 2, 255, 0, 0);
+	}
+	else
+	{
+		playerx = METERS_TO_PIXELS(App->physics->players.at(1).x) - METERS_TO_PIXELS(App->physics->players.at(1).radius);
+		playery = SCREEN_HEIGHT - METERS_TO_PIXELS(App->physics->players.at(1).y);
+		App->renderer->DrawLine(playerx, playery, playerx - cos(App->player->angleP2) * App->player->powerP2 * 2, playery - sin(App->player->angleP2) * App->player->powerP2 * 2, 255, 0, 0);
 	}
 
 

@@ -118,6 +118,8 @@ public:
 
 	int winner = 0;
 
+	int playerx, playery;
+
 private:
 
 	bool debug;
