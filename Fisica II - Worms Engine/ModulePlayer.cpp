@@ -121,7 +121,7 @@ update_status ModulePlayer::Update()
 			if (turn1)
 			{
 				if(angleP1 < DEGTORAD * 90)
-					angleP1+=DEGTORAD;
+					angleP1 += DEGTORAD;
 			}
 			else
 			{

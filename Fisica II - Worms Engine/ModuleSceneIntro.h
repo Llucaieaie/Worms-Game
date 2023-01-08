@@ -82,6 +82,8 @@ public:
 	SDL_Texture* integrador;
 	SDL_Texture* fps;
 	SDL_Texture* arma;
+	SDL_Texture* datos;
+
 
 	SDL_Texture* p1Win;
 	SDL_Texture* p2Win;

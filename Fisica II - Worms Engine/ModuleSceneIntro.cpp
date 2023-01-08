@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleSceneIntro.h"
+#include "ModulePlayer.h"
 
 
 
@@ -27,6 +28,7 @@ bool ModuleSceneIntro::Start()
 	integrador = App->textures->Load("Assets/integradors.png");
 	fps = App->textures->Load("Assets/fps.png");
 	arma = App->textures->Load("Assets/armas.png");
+	datos = App->textures->Load("Assets/datos.png");
 
 	//App->physics->atmosphere.windx = rand() % 101;
 	//App->physics->atmosphere.windx = App->physics->atmosphere.windx - 50;
@@ -85,6 +87,18 @@ update_status ModuleSceneIntro::Update()
 	TextDraw(App->physics->gravity_x, 5 , 380, 14, 25, 0.3);
 	TextDraw(App->physics->gravity_y, 5, 380, 45, 25, 0.3);
 
+	if (App->player->turn1) 
+	{
+		TextDraw(App->player->powerP1, 5, 830, 15, 25, 0.3);
+		TextDraw(App->player->angleP1 * RADTODEG, 5, 830, 45, 25, 0.3);
+	}
+
+	else 
+	{
+		TextDraw(App->player->powerP2, 5, 830, 15, 25, 0.3);
+		TextDraw(App->player->angleP2 * RADTODEG, 5, 830, 45, 25, 0.3);
+	}
+
 	//Printar nombres/letras
 	SDL_Rect g_x = { 861, 127, 380, 55 };
 	App->renderer->Blit(variables, 76, 10, &g_x, 0.4);
@@ -94,6 +108,8 @@ update_status ModuleSceneIntro::Update()
 	App->renderer->Blit(variables, 115, 80, &w_x, 0.4);
 	SDL_Rect w_y = { 966, 343, 276, 55 };
 	App->renderer->Blit(variables, 115, 115, &w_y, 0.4);
+	SDL_Rect ang = { 24, 35, 220, 150 };
+	App->renderer->Blit(datos, 585, 10, &ang, 0.5);
 
 	//Printar integradores
 	if (App->physics->integrator == ModulePhysics::Integrator_Type::VERLET)
