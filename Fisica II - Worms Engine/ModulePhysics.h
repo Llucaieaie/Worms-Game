@@ -117,11 +117,10 @@ public:
 	int integrador = 1;
 
 	int winner = 0;
-	int girar = 0;
-
-	bool debug = false;
 
 private:
+
+	bool debug;
 };
 
 // Compute modulus of a vector

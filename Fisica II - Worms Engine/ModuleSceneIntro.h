@@ -56,13 +56,7 @@ public:
 public:
 
 	SDL_Texture* graphics;
-	SDL_Texture* background;
-	SDL_Texture* water;
-	SDL_Texture* platforms;
-	SDL_Texture* player1;
-	SDL_Texture* player2;
-	SDL_Texture* arma1;
-	SDL_Texture* arma2;
+	PhysBody* background;
 
 	Bouncer bouncer1;
 	Bouncer bouncer2;
