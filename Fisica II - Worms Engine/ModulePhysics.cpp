@@ -199,35 +199,20 @@ update_status ModulePhysics::PreUpdate()
 		}
 		else if (is_colliding_with_ground(ball, wall1))
 		{
-			// TP ball to ground surface
-			//if (ball.y <= wall1.y + wall1.h - ball.radius)
-			//	ball.y = wall1.y - ball.radius;
-			//else
-			//	ball.y = wall1.y + wall1.h + ball.radius;
 
 			// Elastic bounce with ground
-			ball.vy = -ball.vy;
+			ball.x = wall1.x + wall1.w + ball.radius;
 
 			//FUYM non-elasticity
-			ball.vx *= ball.coef_friction;
-			ball.vy *= ball.coef_restitution;
-			ball.onair = false;
+			ball.vx *= ball.coef_restitution;
 		}
 		else if (is_colliding_with_ground(ball, wall2))
 		{
-			// TP ball to ground surface
-			//if (ball.y <= wall2.y + wall2.h - ball.radius)
-			//	ball.y = wall2.y - ball.radius;
-			//else
-			//	ball.y = wall2.y + wall2.h + ball.radius;
-
 			// Elastic bounce with ground
-			ball.vy = -ball.vy;
+			ball.x = wall2.x - ball.radius;
 
 			//FUYM non-elasticity
-			ball.vx *= ball.coef_friction;
-			ball.vy *= ball.coef_restitution;
-			ball.onair = false;
+			ball.vx *= ball.coef_restitution;
 		}
 	}
 	
@@ -488,8 +473,6 @@ update_status ModulePhysics::PostUpdate()
 		App->renderer->Blit(App->scene_intro->player2, pos_x2 - 70, pos_y2 - 76, 0, 0.15);
 
 
-
-	LOG("debug: %d", debug);
 	//for (auto& players : App->physics->players)
 	//{
 	//	// Convert from physical magnitudes to geometrical pixels
