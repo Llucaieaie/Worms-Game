@@ -9,9 +9,9 @@
 
 ## CONTROLS:
 
-  * Left arrow: 
-  * Right arrow: 
-  * Down Arrow: 
+  * A: move left
+  * D: move right
+  * Space: jump
 
 ## DEBUG FEATURES:
 
